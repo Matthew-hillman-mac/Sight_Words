@@ -1,0 +1,1414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <title>Rainbow Sight Words</title>
+  <meta name="theme-color" content="#ff9ed2" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Sight Words" />
+  <style>
+    :root {
+      --bg1: #fff7fd;
+      --bg2: #eef8ff;
+      --card: rgba(255, 255, 255, 0.95);
+      --text: #5a4374;
+      --muted: #7b6a8f;
+      --green: #33c45d;
+      --green-dark: #1fa347;
+      --red: #ff5f7f;
+      --red-dark: #df3d63;
+      --purple: #9b7bff;
+      --pink: #ff9ecf;
+      --blue: #84ddff;
+      --yellow: #ffd96a;
+      --chip: #f4ecff;
+      --shadow: 0 14px 30px rgba(123, 95, 160, 0.14);
+      --radius: 28px;
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, #fff0f7 0%, transparent 32%),
+        radial-gradient(circle at top right, #edf7ff 0%, transparent 34%),
+        linear-gradient(180deg, var(--bg1), var(--bg2));
+    }
+
+    body {
+      padding: calc(12px + var(--safe-top)) 14px calc(24px + var(--safe-bottom));
+      overflow-x: hidden;
+    }
+
+    .app {
+      max-width: 620px;
+      margin: 0 auto;
+      display: grid;
+      gap: 14px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,0.95);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius);
+      backdrop-filter: blur(10px);
+    }
+
+    .hero {
+      padding: 16px 14px 14px;
+      text-align: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero-top {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .sparkle-group {
+      position: relative;
+      height: 56px;
+    }
+
+    .sparkle {
+      position: absolute;
+      font-size: 18px;
+      animation: floaty 3s ease-in-out infinite;
+      opacity: .78;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    .sparkle.a { top: 4px; left: 16px; }
+    .sparkle.b { top: 22px; left: 44px; animation-delay: .7s; }
+    .sparkle.c { top: 2px; right: 14px; animation-delay: .4s; }
+    .sparkle.d { top: 24px; right: 42px; animation-delay: 1.1s; }
+
+    @keyframes floaty {
+      0%,100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-5px) scale(1.08); }
+    }
+
+    .rainbow-wrap {
+      margin: 0 auto;
+      width: 170px;
+      height: 86px;
+      position: relative;
+    }
+
+    .arc {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 999px 999px 0 0;
+      border-bottom: none;
+    }
+
+    .a1 { width: 170px; height: 84px; border: 10px solid #ff9dc7; top: 0; }
+    .a2 { width: 146px; height: 72px; border: 10px solid #ffbc6e; top: 12px; }
+    .a3 { width: 122px; height: 60px; border: 10px solid #ffe46a; top: 24px; }
+    .a4 { width: 98px; height: 48px; border: 10px solid #8de0a4; top: 36px; }
+    .a5 { width: 74px; height: 36px; border: 10px solid #8fd9ff; top: 48px; }
+
+    .cloud {
+      position: absolute;
+      bottom: 2px;
+      width: 40px;
+      height: 22px;
+      border-radius: 999px;
+      background: #fff;
+      box-shadow: 10px -7px 0 5px #fff, 22px 0 0 3px #fff;
+    }
+
+    .cloud.left { left: 18px; }
+    .cloud.right { right: 18px; }
+
+    .title {
+      margin: 0;
+      font-size: 1.8rem;
+      line-height: 1.08;
+      font-weight: 900;
+    }
+
+    .subtitle {
+      margin: 8px 0 10px;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--muted);
+    }
+
+    .unicorn-box {
+      margin-top: 8px;
+      display: grid;
+      place-items: center;
+    }
+
+    .unicorn {
+      font-size: 3rem;
+      animation: unicornBounce 2.8s ease-in-out infinite;
+      transform-origin: center bottom;
+      transition: transform .18s ease;
+      filter: drop-shadow(0 8px 10px rgba(255,158,207,.18));
+    }
+
+    @keyframes unicornBounce {
+      0%,100% { transform: translateY(0) rotate(0deg); }
+      25% { transform: translateY(-2px) rotate(-2deg); }
+      50% { transform: translateY(-7px) rotate(2deg); }
+      75% { transform: translateY(-2px) rotate(-1deg); }
+    }
+
+    .main {
+      padding: 14px;
+    }
+
+    .levels {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: 14px;
+    }
+
+    .level-btn {
+      border: none;
+      border-radius: 999px;
+      background: #fff;
+      color: var(--text);
+      padding: 10px 14px;
+      font-size: .96rem;
+      font-weight: 900;
+      min-height: 44px;
+      box-shadow: 0 6px 14px rgba(120,104,160,.10);
+      cursor: pointer;
+    }
+
+    .level-btn.active {
+      background: linear-gradient(135deg,#ffe7f3,#e7f5ff);
+      outline: 3px solid rgba(155,123,255,.18);
+    }
+
+    .word-stage {
+      border-radius: 30px;
+      background: linear-gradient(180deg, rgba(255,255,255,.96), rgba(255,250,255,.86));
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.65), var(--shadow);
+      padding: 20px 14px 22px;
+      min-height: 245px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      margin-bottom: 10px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .word-stage::before {
+      content: "";
+      position: absolute;
+      inset: auto -40px -58px;
+      height: 120px;
+      background:
+        radial-gradient(circle at 18% 20%, rgba(255,158,207,.18), transparent 30%),
+        radial-gradient(circle at 48% 30%, rgba(132,221,255,.16), transparent 28%),
+        radial-gradient(circle at 78% 20%, rgba(255,217,106,.16), transparent 32%);
+      pointer-events: none;
+    }
+
+    .word-stage.practice-mode {
+      outline: 4px solid rgba(255,95,127,.12);
+    }
+
+    .current-word,
+    .finish-text {
+      position: relative;
+      z-index: 1;
+      font-weight: 900;
+      color: #5b477c;
+      word-break: break-word;
+    }
+
+    .current-word {
+      font-size: clamp(3.5rem, 15vw, 5.9rem);
+      line-height: 1;
+      letter-spacing: .02em;
+    }
+
+    .finish-text {
+      font-size: clamp(2.2rem, 9vw, 3.7rem);
+      line-height: 1.15;
+    }
+
+    .helper {
+      min-height: 44px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 10px;
+    }
+
+    .helper-bubble {
+      display: inline-block;
+      background: linear-gradient(135deg,#fff2fa,#eef8ff);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-size: .98rem;
+      font-weight: 900;
+      box-shadow: 0 8px 18px rgba(109,88,148,.08);
+      max-width: 100%;
+    }
+
+    .feedback {
+      min-height: 36px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 10px;
+    }
+
+    .feedback-badge {
+      display: inline-block;
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: .96rem;
+      font-weight: 900;
+      color: white;
+      opacity: 0;
+      transform: scale(.96);
+      transition: 180ms ease;
+    }
+
+    .feedback-badge.show {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .feedback-good { background: linear-gradient(135deg,#38d66b,#1ead4d); }
+    .feedback-practice { background: linear-gradient(135deg,#ff6d88,#eb3f63); }
+
+    .controls {
+      display: grid;
+      gap: 10px;
+    }
+
+    .btn {
+      width: 100%;
+      border: none;
+      border-radius: 22px;
+      min-height: 72px;
+      padding: 16px 18px;
+      font-size: 1.16rem;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 10px 18px rgba(109,88,148,.16);
+      transition: transform .08s ease, opacity .12s ease;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    .btn:active { transform: scale(.985); }
+    .btn-hear { color: var(--text); background: linear-gradient(135deg,#fff3b5,#ffdff1,#ddf2ff); }
+    .btn-correct { color: white; background: linear-gradient(180deg,var(--green),var(--green-dark)); }
+    .btn-practice { color: white; background: linear-gradient(180deg,var(--red),var(--red-dark)); }
+
+    .lower {
+      padding: 14px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .panel {
+      background: rgba(255,255,255,.72);
+      border: 1px solid rgba(255,255,255,.92);
+      border-radius: 22px;
+      padding: 12px;
+    }
+
+    .panel-title {
+      margin: 0 0 8px;
+      font-size: 1rem;
+      font-weight: 900;
+      color: #654c82;
+    }
+
+    .stars-row {
+      font-size: 1.6rem;
+      letter-spacing: .08em;
+      line-height: 1.2;
+      min-height: 34px;
+      margin-bottom: 6px;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 16px;
+      border-radius: 999px;
+      background: #f3ecfb;
+      overflow: hidden;
+      box-shadow: inset 0 1px 3px rgba(90,67,116,.08);
+      margin-bottom: 8px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: inherit;
+      background: linear-gradient(90deg,#ff9ecf 0%,#ffbe6d 25%,#ffe26f 50%,#8ee1a5 75%,#8ad9ff 100%);
+      transition: width 240ms ease;
+    }
+
+    .path-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      min-height: 36px;
+      flex-wrap: nowrap;
+      overflow: hidden;
+      margin: 4px 0 8px;
+      font-size: 1.05rem;
+    }
+
+    .path-step {
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      background: #efe7fb;
+      flex: 0 0 18px;
+      box-shadow: inset 0 1px 2px rgba(90,67,116,.08);
+    }
+
+    .path-step.done:nth-child(5n+1) { background: #ff9ecf; }
+    .path-step.done:nth-child(5n+2) { background: #ffbe6d; }
+    .path-step.done:nth-child(5n+3) { background: #ffe26f; }
+    .path-step.done:nth-child(5n+4) { background: #8ee1a5; }
+    .path-step.done:nth-child(5n+5) { background: #8ad9ff; }
+
+    .path-unicorn {
+      font-size: 1.2rem;
+      transform: translateY(-2px);
+    }
+
+    .tiny-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+
+    .tiny-badge {
+      background: #fff;
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: .92rem;
+      font-weight: 900;
+      color: var(--text);
+      box-shadow: 0 4px 10px rgba(109,88,148,.06);
+    }
+
+    .small-text {
+      color: var(--muted);
+      font-size: .97rem;
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    .chips,
+    .all-words {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      min-height: 28px;
+    }
+
+    .chip,
+    .word-chip {
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: .96rem;
+      font-weight: 900;
+      border: 1px solid rgba(255,255,255,.95);
+      box-shadow: 0 4px 10px rgba(109,88,148,.06);
+    }
+
+    .chip {
+      background: linear-gradient(135deg,#ffd7e5,#ffc5dc);
+      color: #a33055;
+    }
+
+    .word-chip {
+      background: #f4effb;
+      color: #6c5a85;
+    }
+
+    .word-chip.current {
+      background: linear-gradient(135deg,#fff3b5,#ffdff1,#ddf2ff);
+      color: #5a4374;
+      outline: 2px solid rgba(255,190,109,.65);
+    }
+
+    .word-chip.learned {
+      background: linear-gradient(135deg,#d7f7e1,#bdf0ce);
+      color: #1f8d45;
+    }
+
+    .word-chip.practice {
+      background: linear-gradient(135deg,#ffd7e5,#ffc5dc);
+      color: #a33055;
+    }
+
+    .legend {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .legend span {
+      font-size: .86rem;
+      font-weight: 800;
+      color: var(--muted);
+      background: white;
+      padding: 6px 10px;
+      border-radius: 999px;
+    }
+
+    .treasure {
+      text-align: center;
+      font-size: 1rem;
+      font-weight: 900;
+      color: #7a5698;
+      min-height: 24px;
+    }
+
+    .bottom-actions {
+      display: grid;
+      gap: 10px;
+    }
+
+    .secondary-btn {
+      width: 100%;
+      border: none;
+      border-radius: 18px;
+      min-height: 52px;
+      padding: 12px 14px;
+      font-size: 1rem;
+      font-weight: 900;
+      color: var(--text);
+      background: linear-gradient(135deg,#f4ebff,#eaf7ff);
+      box-shadow: 0 8px 18px rgba(109,88,148,.08);
+      cursor: pointer;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    .helper-note {
+      text-align: center;
+      font-size: .9rem;
+      color: var(--muted);
+      font-weight: 700;
+      padding: 0 4px;
+    }
+
+    details.parent-panel {
+      overflow: hidden;
+    }
+
+    details.parent-panel > summary {
+      list-style: none;
+      cursor: pointer;
+      font-weight: 900;
+      font-size: 1rem;
+      color: #654c82;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    details.parent-panel > summary::-webkit-details-marker { display: none; }
+
+    .caret {
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      background: #fff;
+      box-shadow: 0 4px 10px rgba(109,88,148,.06);
+      transition: transform .16s ease;
+      flex: 0 0 28px;
+    }
+
+    details[open] .caret {
+      transform: rotate(180deg);
+    }
+
+    .parent-body {
+      padding-top: 12px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .parent-label {
+      font-size: .92rem;
+      font-weight: 900;
+      color: #6a5387;
+    }
+
+    .parent-input,
+    .parent-textarea {
+      width: 100%;
+      border: 1px solid rgba(155,123,255,.18);
+      border-radius: 16px;
+      padding: 12px 14px;
+      font: inherit;
+      color: var(--text);
+      background: rgba(255,255,255,.96);
+      appearance: none;
+      -webkit-appearance: none;
+    }
+
+    .parent-textarea {
+      min-height: 130px;
+      resize: vertical;
+      line-height: 1.4;
+    }
+
+    .parent-grid {
+      display: grid;
+      gap: 8px;
+    }
+
+    .parent-actions {
+      display: grid;
+      gap: 8px;
+    }
+
+    .parent-status {
+      min-height: 22px;
+      font-size: .9rem;
+      font-weight: 800;
+      color: var(--muted);
+    }
+
+    .confetti {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 100;
+    }
+
+    .piece {
+      position: absolute;
+      top: -20px;
+      font-size: 20px;
+      animation: fall linear forwards;
+      opacity: .96;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: .92;
+      }
+    }
+
+    .pulse { animation: pulsePop 220ms ease; }
+
+    @keyframes pulsePop {
+      0% { transform: scale(.97); }
+      100% { transform: scale(1); }
+    }
+
+    .word-swap { animation: wordSwap .18s ease; }
+
+    @keyframes wordSwap {
+      0% { transform: scale(.96); opacity: .4; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <section class="card hero">
+      <div class="hero-top">
+        <div class="sparkle-group" aria-hidden="true">
+          <div class="sparkle a">✨</div>
+          <div class="sparkle b">⭐</div>
+        </div>
+
+        <div class="rainbow-wrap" aria-hidden="true">
+          <div class="arc a1"></div>
+          <div class="arc a2"></div>
+          <div class="arc a3"></div>
+          <div class="arc a4"></div>
+          <div class="arc a5"></div>
+          <div class="cloud left"></div>
+          <div class="cloud right"></div>
+        </div>
+
+        <div class="sparkle-group" aria-hidden="true">
+          <div class="sparkle c">⭐</div>
+          <div class="sparkle d">✨</div>
+        </div>
+      </div>
+
+      <h1 class="title">Rainbow Sight Words</h1>
+      <p class="subtitle">Listen, read, and tap the button</p>
+
+      <div class="unicorn-box" aria-hidden="true">
+        <div class="unicorn" id="unicorn">🦄</div>
+      </div>
+    </section>
+
+    <section class="card main">
+      <div id="levelButtons" class="levels"></div>
+
+      <div id="wordStage" class="word-stage">
+        <div id="currentWord" class="current-word" aria-live="polite"></div>
+      </div>
+
+      <div class="helper">
+        <div id="helperBubble" class="helper-bubble">Tap Hear Word</div>
+      </div>
+
+      <div class="feedback" aria-live="polite">
+        <div id="feedbackBadge" class="feedback-badge">Great job!</div>
+      </div>
+
+      <div class="controls">
+        <button id="hearBtn" class="btn btn-hear" type="button">🔊 Hear Word</button>
+        <button id="correctBtn" class="btn btn-correct" type="button">✅ I Got It</button>
+        <button id="practiceBtn" class="btn btn-practice" type="button">❤️ Needs Practice</button>
+      </div>
+    </section>
+
+    <section class="card lower">
+      <div class="panel">
+        <h2 class="panel-title">⭐ Progress</h2>
+        <div id="stars" class="stars-row">☆☆☆☆☆</div>
+        <div class="progress-bar" aria-hidden="true">
+          <div id="progressFill" class="progress-fill"></div>
+        </div>
+        <div id="pathRow" class="path-row" aria-hidden="true"></div>
+        <div id="progressText" class="small-text">Pick a level and start.</div>
+
+        <div class="tiny-row">
+          <div id="streakBadge" class="tiny-badge">🔥 Streak: 0</div>
+          <div id="rewardBadge" class="tiny-badge">🎁 Treasure: 0</div>
+          <div id="countBadge" class="tiny-badge">📚 Words: 0</div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2 class="panel-title">💖 Words to Practice</h2>
+        <div id="practiceChips" class="chips"></div>
+        <div id="practiceEmpty" class="small-text">No practice words right now.</div>
+        <div class="bottom-actions" style="margin-top:10px;">
+          <button id="copyPracticeBtn" class="secondary-btn" type="button">Copy Practice Words</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2 class="panel-title">📚 All Words</h2>
+        <div id="allWords" class="all-words"></div>
+        <div class="legend">
+          <span>🟣 Current</span>
+          <span>🟢 Learned</span>
+          <span>💗 Practice</span>
+          <span>⚪ Not yet learned</span>
+        </div>
+      </div>
+
+      <div id="treasureText" class="treasure"></div>
+
+      <div class="bottom-actions">
+        <button id="restartBtn" class="secondary-btn" type="button">Start Over</button>
+        <button id="homeBtn" class="secondary-btn" type="button">📱 How to Add to Home Screen</button>
+        <div id="homeHelp" class="helper-note hidden">On iPhone: open this page in Safari, tap Share, then tap Add to Home Screen.</div>
+      </div>
+
+      <div class="panel">
+        <details class="parent-panel">
+          <summary>
+            <span>👨‍👩‍👧 Parent Settings</span>
+            <span class="caret">⌄</span>
+          </summary>
+          <div class="parent-body">
+            <div class="small-text">Paste one word per line, or separate words with commas or spaces. You can also import a .txt or .csv file.</div>
+            <label class="parent-label" for="customWordsInput">Custom word list</label>
+            <textarea id="customWordsInput" class="parent-textarea" placeholder="the&#10;and&#10;you&#10;said"></textarea>
+            <input id="wordFileInput" class="parent-input" type="file" accept=".txt,.csv,text/plain,text/csv" />
+            <div class="parent-actions">
+              <button id="useCustomBtn" class="secondary-btn" type="button">Use Custom Words</button>
+              <button id="saveCustomBtn" class="secondary-btn" type="button">Save Custom List</button>
+              <button id="defaultsBtn" class="secondary-btn" type="button">Go Back to Default Levels</button>
+              <button id="clearCustomBtn" class="secondary-btn" type="button">Clear Saved Custom List</button>
+            </div>
+            <div id="parentStatus" class="parent-status"></div>
+          </div>
+        </details>
+      </div>
+    </section>
+  </div>
+
+  <div id="confetti" class="confetti" aria-hidden="true"></div>
+
+  <script>
+    const DEFAULT_LEVELS = {
+      "Level 1": [
+        "the","and","you","see","go","my","can","it","we","up",
+        "big","me","is","a","to","in","on","at","like","look"
+      ],
+      "Level 2": [
+        "come","here","blue","red","yellow","green","little","said","help","play",
+        "jump","run","find","make","where","one","two","three","for","not"
+      ],
+      "Level 3": [
+        "have","with","was","good","this","that","they","what","from","want",
+        "there","all","are","out","went","will","now","be","she","he"
+      ]
+    };
+
+    const ALL_LEVELS = "All Levels";
+    const CUSTOM_SET = "Custom";
+    const GOOD_MESSAGES = [
+      "Yay! You got it!",
+      "Super reading!",
+      "Nice job!",
+      "You are fast!",
+      "Great work!",
+      "The unicorn is proud of you!"
+    ];
+    const TRY_AGAIN_MESSAGES = [
+      "That is okay. We will try it again.",
+      "Nice try. It will come back soon.",
+      "Let us practice that one later.",
+      "You are still doing great."
+    ];
+    const TREASURES = ["⭐", "💎", "🌈", "🦄", "💖"];
+    const STORAGE_CUSTOM = "rainbowSightWordsCustomWords";
+    const STORAGE_SELECTED = "rainbowSightWordsSelectedSet";
+
+    const state = {
+      selectedSet: ALL_LEVELS,
+      customWords: [],
+      activeWords: [],
+      newWordQueue: [],
+      practiceQueue: [],
+      completedWords: new Set(),
+      practiceWords: new Set(),
+      currentWord: null,
+      totalWords: 0,
+      streak: 0,
+      treasureCount: 0,
+      lastWordServed: null,
+      inPracticeRound: false,
+      turnPattern: ["new", "new", "practice"],
+      turnIndex: 0
+    };
+
+    const levelButtonsEl = document.getElementById("levelButtons");
+    const currentWordEl = document.getElementById("currentWord");
+    const wordStageEl = document.getElementById("wordStage");
+    const helperBubbleEl = document.getElementById("helperBubble");
+    const feedbackBadgeEl = document.getElementById("feedbackBadge");
+    const starsEl = document.getElementById("stars");
+    const progressTextEl = document.getElementById("progressText");
+    const progressFillEl = document.getElementById("progressFill");
+    const pathRowEl = document.getElementById("pathRow");
+    const practiceChipsEl = document.getElementById("practiceChips");
+    const practiceEmptyEl = document.getElementById("practiceEmpty");
+    const streakBadgeEl = document.getElementById("streakBadge");
+    const rewardBadgeEl = document.getElementById("rewardBadge");
+    const countBadgeEl = document.getElementById("countBadge");
+    const allWordsEl = document.getElementById("allWords");
+    const treasureTextEl = document.getElementById("treasureText");
+    const hearBtn = document.getElementById("hearBtn");
+    const correctBtn = document.getElementById("correctBtn");
+    const practiceBtn = document.getElementById("practiceBtn");
+    const restartBtn = document.getElementById("restartBtn");
+    const homeBtn = document.getElementById("homeBtn");
+    const homeHelp = document.getElementById("homeHelp");
+    const copyPracticeBtn = document.getElementById("copyPracticeBtn");
+    const customWordsInput = document.getElementById("customWordsInput");
+    const wordFileInput = document.getElementById("wordFileInput");
+    const useCustomBtn = document.getElementById("useCustomBtn");
+    const saveCustomBtn = document.getElementById("saveCustomBtn");
+    const defaultsBtn = document.getElementById("defaultsBtn");
+    const clearCustomBtn = document.getElementById("clearCustomBtn");
+    const parentStatusEl = document.getElementById("parentStatus");
+    const confettiEl = document.getElementById("confetti");
+    const unicornEl = document.getElementById("unicorn");
+
+    function loadSavedCustomWords() {
+      try {
+        const saved = localStorage.getItem(STORAGE_CUSTOM);
+        if (saved) {
+          const arr = JSON.parse(saved);
+          if (Array.isArray(arr) && arr.length > 0) {
+            state.customWords = arr;
+            customWordsInput.value = arr.join("\n");
+          }
+        }
+      } catch (err) {
+        console.warn(err);
+      }
+    }
+
+    function saveSelectedSet() {
+      try {
+        localStorage.setItem(STORAGE_SELECTED, state.selectedSet);
+      } catch (err) {
+        console.warn(err);
+      }
+    }
+
+    function loadSelectedSet() {
+      try {
+        const saved = localStorage.getItem(STORAGE_SELECTED);
+        if (saved) state.selectedSet = saved;
+      } catch (err) {
+        console.warn(err);
+      }
+    }
+
+    function normalizeWords(text) {
+      const words = text
+        .split(/[\s,;]+/)
+        .map(word => word.trim().toLowerCase())
+        .filter(Boolean)
+        .filter(word => /^[a-zA-Z'-]+$/.test(word));
+
+      return [...new Set(words)];
+    }
+
+    function getWordsForSet(setName) {
+      if (setName === CUSTOM_SET && state.customWords.length > 0) {
+        return [...state.customWords];
+      }
+      if (setName === ALL_LEVELS) {
+        return [
+          ...DEFAULT_LEVELS["Level 1"],
+          ...DEFAULT_LEVELS["Level 2"],
+          ...DEFAULT_LEVELS["Level 3"]
+        ];
+      }
+      return [...(DEFAULT_LEVELS[setName] || DEFAULT_LEVELS["Level 1"])];
+    }
+
+    function availableSets() {
+      const sets = [ALL_LEVELS, ...Object.keys(DEFAULT_LEVELS)];
+      if (state.customWords.length > 0) sets.push(CUSTOM_SET);
+      return sets;
+    }
+
+    function buildLevelButtons() {
+      levelButtonsEl.innerHTML = "";
+      availableSets().forEach(setName => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "level-btn";
+        btn.textContent = setName;
+        if (setName === state.selectedSet) btn.classList.add("active");
+        btn.addEventListener("click", () => {
+          state.selectedSet = setName;
+          saveSelectedSet();
+          resetGame();
+          buildLevelButtons();
+        });
+        levelButtonsEl.appendChild(btn);
+      });
+    }
+
+    function resetGame() {
+      const words = getWordsForSet(state.selectedSet);
+      state.activeWords = [...words];
+      state.newWordQueue = [...words];
+      state.practiceQueue = [];
+      state.completedWords = new Set();
+      state.practiceWords = new Set();
+      state.currentWord = null;
+      state.totalWords = words.length;
+      state.streak = 0;
+      state.treasureCount = 0;
+      state.lastWordServed = null;
+      state.inPracticeRound = false;
+      state.turnIndex = 0;
+      clearFeedback();
+      setHelper("Tap Hear Word");
+      updatePracticeList();
+      updateAllWords();
+      updateBadges();
+      treasureTextEl.textContent = "";
+      nextWord();
+      updateProgress();
+      buildPath();
+    }
+
+    function getPracticeWord() {
+      if (state.practiceQueue.length === 0) return null;
+      if (state.practiceQueue.length > 1 && state.practiceQueue[0] === state.lastWordServed) {
+        state.practiceQueue.push(state.practiceQueue.shift());
+      }
+      return state.practiceQueue.shift();
+    }
+
+    function getNextWord() {
+      let next = null;
+      let source = null;
+
+      if (state.newWordQueue.length > 0 && state.practiceQueue.length > 0) {
+        let tries = 0;
+        while (tries < state.turnPattern.length && !next) {
+          const preferred = state.turnPattern[state.turnIndex % state.turnPattern.length];
+          state.turnIndex += 1;
+          tries += 1;
+
+          if (preferred === "new" && state.newWordQueue.length > 0) {
+            const candidate = state.newWordQueue[0];
+            if (candidate === state.lastWordServed && state.practiceQueue.length > 0) {
+              continue;
+            }
+            next = state.newWordQueue.shift();
+            source = "new";
+          }
+
+          if (preferred === "practice" && state.practiceQueue.length > 0) {
+            const candidate = state.practiceQueue[0];
+            if (candidate === state.lastWordServed && state.newWordQueue.length > 0) {
+              continue;
+            }
+            next = getPracticeWord();
+            source = "practice";
+          }
+        }
+      }
+
+      if (!next && state.newWordQueue.length > 0 && state.practiceQueue.length === 0) {
+        next = state.newWordQueue.shift();
+        source = "new";
+      }
+
+      if (!next && state.practiceQueue.length > 0 && state.newWordQueue.length === 0) {
+        next = getPracticeWord();
+        source = "practice";
+      }
+
+      if (!next && state.practiceQueue.length > 0) {
+        next = getPracticeWord();
+        source = "practice";
+      }
+
+      if (!next && state.newWordQueue.length > 0) {
+        next = state.newWordQueue.shift();
+        source = "new";
+      }
+
+      if (source === "practice") {
+        state.inPracticeRound = true;
+      } else if (state.practiceQueue.length === 0) {
+        state.inPracticeRound = false;
+      }
+
+      return next;
+    }
+
+    function nextWord() {
+      const next = getNextWord();
+      state.currentWord = next;
+
+      if (!next) {
+        showFinished();
+        return;
+      }
+
+      state.lastWordServed = next;
+      currentWordEl.className = "current-word word-swap";
+      currentWordEl.textContent = next;
+      wordStageEl.classList.toggle("practice-mode", state.inPracticeRound);
+      setHelper(state.inPracticeRound ? "Practice round! Let’s try the tricky words." : "Listen, then tap the button.");
+      enablePlayButtons(true);
+      updatePracticeList();
+      updateAllWords();
+      updateProgress();
+      buildPath();
+    }
+
+    function showFinished() {
+      state.currentWord = null;
+      currentWordEl.className = "finish-text";
+      currentWordEl.innerHTML = "🌈 You finished!<br>Great job!";
+      wordStageEl.classList.remove("practice-mode");
+      enablePlayButtons(false);
+      setHelper("You helped the unicorn finish the rainbow!");
+      showFeedback("Amazing!", "good");
+      launchConfetti(28);
+      updatePracticeList();
+      updateAllWords();
+      updateProgress();
+      buildPath();
+    }
+
+    function enablePlayButtons(enabled) {
+      [hearBtn, correctBtn, practiceBtn].forEach(btn => {
+        btn.disabled = !enabled;
+        btn.style.opacity = enabled ? "1" : "0.6";
+        btn.style.cursor = enabled ? "pointer" : "default";
+      });
+    }
+
+    function handleCorrect() {
+      const word = state.currentWord;
+      if (!word) return;
+
+      state.completedWords.add(word);
+      state.practiceWords.delete(word);
+      removeAllMatches(state.practiceQueue, word);
+      state.streak += 1;
+
+      if (state.streak > 0 && state.streak % 5 === 0) {
+        state.treasureCount += 1;
+        const reward = TREASURES[(state.treasureCount - 1) % TREASURES.length];
+        treasureTextEl.textContent = `${reward} Treasure earned!`;
+        launchConfetti(14);
+      } else {
+        treasureTextEl.textContent = "";
+      }
+
+      showFeedback("Great job!", "good");
+      setHelper(randomFrom(GOOD_MESSAGES));
+      bounceWordStage();
+      hopUnicorn();
+      launchConfetti(8);
+      updateBadges();
+      updateAllWords();
+      updatePracticeList();
+      updateProgress();
+      buildPath();
+      nextWord();
+    }
+
+    function handleNeedsPractice() {
+      const word = state.currentWord;
+      if (!word) return;
+
+      state.streak = 0;
+      treasureTextEl.textContent = "";
+
+      if (!state.completedWords.has(word)) {
+        state.practiceWords.add(word);
+        removeAllMatches(state.practiceQueue, word);
+        state.practiceQueue.push(word);
+      }
+
+      showFeedback("We will practice it again!", "practice");
+      setHelper(randomFrom(TRY_AGAIN_MESSAGES));
+      bounceWordStage();
+      hopUnicorn();
+      updateBadges();
+      updatePracticeList();
+      updateAllWords();
+      updateProgress();
+      buildPath();
+      nextWord();
+    }
+
+    function removeAllMatches(arr, value) {
+      let i = arr.length;
+      while (i--) {
+        if (arr[i] === value) arr.splice(i, 1);
+      }
+    }
+
+    function updatePracticeList() {
+      const list = [...state.practiceWords];
+      practiceChipsEl.innerHTML = "";
+      if (list.length === 0) {
+        practiceEmptyEl.style.display = "block";
+        return;
+      }
+      practiceEmptyEl.style.display = "none";
+      list.forEach(word => {
+        const chip = document.createElement("div");
+        chip.className = "chip";
+        chip.textContent = word;
+        practiceChipsEl.appendChild(chip);
+      });
+    }
+
+    function updateAllWords() {
+      allWordsEl.innerHTML = "";
+      state.activeWords.forEach(word => {
+        const chip = document.createElement("div");
+        chip.className = "word-chip";
+        if (word === state.currentWord) chip.classList.add("current");
+        else if (state.completedWords.has(word)) chip.classList.add("learned");
+        else if (state.practiceWords.has(word)) chip.classList.add("practice");
+        chip.textContent = word;
+        allWordsEl.appendChild(chip);
+      });
+    }
+
+    function updateProgress() {
+      const total = state.totalWords || 0;
+      const learned = state.completedWords.size;
+      const practiceCount = state.practiceWords.size;
+      const ratio = total ? learned / total : 0;
+      const filledStars = Math.max(0, Math.min(5, Math.round(ratio * 5)));
+      const remaining = total - learned;
+
+      starsEl.textContent = "★".repeat(filledStars) + "☆".repeat(5 - filledStars);
+      progressFillEl.style.width = (ratio * 100).toFixed(1) + "%";
+      countBadgeEl.textContent = `📚 Left: ${Math.max(remaining, 0)}`;
+
+      if (!state.currentWord && total > 0 && state.newWordQueue.length === 0 && state.practiceQueue.length === 0) {
+        progressTextEl.textContent = `You learned all ${total} words!`;
+        return;
+      }
+
+      if (state.inPracticeRound && state.currentWord) {
+        progressTextEl.textContent = `Practice round • Learned: ${learned} • Practice: ${practiceCount}`;
+      } else if (state.currentWord) {
+        progressTextEl.textContent = `Learned: ${learned} • Practice: ${practiceCount}`;
+      } else {
+        progressTextEl.textContent = "Pick a level and start.";
+      }
+    }
+
+    function buildPath() {
+      pathRowEl.innerHTML = "";
+      const steps = Math.min(Math.max(state.totalWords, 0), 15);
+      if (steps === 0) return;
+      const learned = state.completedWords.size;
+      const doneSteps = Math.round((learned / state.totalWords) * steps);
+      for (let i = 0; i < steps; i++) {
+        const step = document.createElement("div");
+        step.className = "path-step" + (i < doneSteps ? " done" : "");
+        pathRowEl.appendChild(step);
+        if (i === Math.min(doneSteps, steps - 1)) {
+          const unicorn = document.createElement("div");
+          unicorn.className = "path-unicorn";
+          unicorn.textContent = "🦄";
+          pathRowEl.appendChild(unicorn);
+        }
+      }
+    }
+
+    function updateBadges() {
+      streakBadgeEl.textContent = `🔥 Streak: ${state.streak}`;
+      rewardBadgeEl.textContent = `🎁 Treasure: ${state.treasureCount}`;
+    }
+
+    function showFeedback(text, kind) {
+      feedbackBadgeEl.textContent = text;
+      feedbackBadgeEl.className = "feedback-badge show " + (kind === "good" ? "feedback-good" : "feedback-practice");
+      clearTimeout(showFeedback._timer);
+      showFeedback._timer = setTimeout(clearFeedback, 900);
+    }
+
+    function clearFeedback() {
+      feedbackBadgeEl.className = "feedback-badge";
+    }
+
+    function setHelper(text) {
+      helperBubbleEl.textContent = text;
+    }
+
+    function bounceWordStage() {
+      wordStageEl.classList.remove("pulse");
+      void wordStageEl.offsetWidth;
+      wordStageEl.classList.add("pulse");
+    }
+
+    function hopUnicorn() {
+      unicornEl.style.transform = "translateY(-8px) scale(1.08)";
+      clearTimeout(hopUnicorn._timer);
+      hopUnicorn._timer = setTimeout(() => {
+        unicornEl.style.transform = "";
+      }, 220);
+    }
+
+    function randomFrom(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    function speakCurrentWord() {
+      if (!state.currentWord || !("speechSynthesis" in window)) return;
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(state.currentWord);
+      utterance.rate = 0.84;
+      utterance.pitch = 1.12;
+      utterance.volume = 1;
+      const voices = window.speechSynthesis.getVoices();
+      const preferred =
+        voices.find(v => /Samantha/i.test(v.name)) ||
+        voices.find(v => /Ava|Allison|Karen|Moira/i.test(v.name)) ||
+        voices.find(v => /en-US|en_US/i.test(v.lang)) ||
+        voices[0];
+      if (preferred) utterance.voice = preferred;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function launchConfetti(count) {
+      confettiEl.innerHTML = "";
+      const pieces = ["✨", "⭐", "🌈", "🦄", "💖"];
+      for (let i = 0; i < count; i++) {
+        const piece = document.createElement("span");
+        piece.className = "piece";
+        piece.textContent = pieces[Math.floor(Math.random() * pieces.length)];
+        piece.style.left = Math.random() * 100 + "vw";
+        piece.style.animationDuration = (2.5 + Math.random() * 2.3) + "s";
+        piece.style.animationDelay = (Math.random() * 0.25) + "s";
+        confettiEl.appendChild(piece);
+      }
+      clearTimeout(launchConfetti._timer);
+      launchConfetti._timer = setTimeout(() => {
+        confettiEl.innerHTML = "";
+      }, 4500);
+    }
+
+    async function copyPracticeWords() {
+      const words = [...state.practiceWords];
+      if (words.length === 0) {
+        parentStatusEl.textContent = "No practice words to copy right now.";
+        return;
+      }
+      const text = words.join(", ");
+      try {
+        await navigator.clipboard.writeText(text);
+        parentStatusEl.textContent = "Practice words copied.";
+      } catch (err) {
+        parentStatusEl.textContent = "Copy did not work. You can copy from the list on screen.";
+      }
+    }
+
+    function useCustomWords(words) {
+      if (!words || words.length === 0) {
+        parentStatusEl.textContent = "Please add at least one word.";
+        return;
+      }
+      state.customWords = [...words];
+      customWordsInput.value = words.join("\n");
+      state.selectedSet = CUSTOM_SET;
+      saveSelectedSet();
+      buildLevelButtons();
+      resetGame();
+      parentStatusEl.textContent = `Using ${words.length} custom words.`;
+    }
+
+    function saveCustomWords() {
+      const words = normalizeWords(customWordsInput.value);
+      if (words.length === 0) {
+        parentStatusEl.textContent = "Nothing to save yet.";
+        return;
+      }
+      state.customWords = [...words];
+      try {
+        localStorage.setItem(STORAGE_CUSTOM, JSON.stringify(words));
+      } catch (err) {
+        console.warn(err);
+      }
+      buildLevelButtons();
+      parentStatusEl.textContent = `Saved ${words.length} custom words.`;
+    }
+
+    function clearCustomWords() {
+      state.customWords = [];
+      customWordsInput.value = "";
+      try {
+        localStorage.removeItem(STORAGE_CUSTOM);
+      } catch (err) {
+        console.warn(err);
+      }
+      if (state.selectedSet === CUSTOM_SET) {
+        state.selectedSet = ALL_LEVELS;
+        saveSelectedSet();
+        resetGame();
+      }
+      buildLevelButtons();
+      parentStatusEl.textContent = "Saved custom words cleared.";
+    }
+
+    function initVoices() {
+      if ("speechSynthesis" in window) {
+        window.speechSynthesis.getVoices();
+      }
+    }
+
+    hearBtn.addEventListener("click", speakCurrentWord);
+    correctBtn.addEventListener("click", handleCorrect);
+    practiceBtn.addEventListener("click", handleNeedsPractice);
+
+    restartBtn.addEventListener("click", () => {
+      if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+      resetGame();
+    });
+
+    homeBtn.addEventListener("click", () => {
+      homeHelp.classList.toggle("hidden");
+    });
+
+    copyPracticeBtn.addEventListener("click", copyPracticeWords);
+
+    useCustomBtn.addEventListener("click", () => {
+      const words = normalizeWords(customWordsInput.value);
+      useCustomWords(words);
+    });
+
+    saveCustomBtn.addEventListener("click", saveCustomWords);
+
+    defaultsBtn.addEventListener("click", () => {
+      state.selectedSet = ALL_LEVELS;
+      saveSelectedSet();
+      buildLevelButtons();
+      resetGame();
+      parentStatusEl.textContent = "Back on the default levels.";
+    });
+
+    clearCustomBtn.addEventListener("click", clearCustomWords);
+
+    wordFileInput.addEventListener("change", async (event) => {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      const text = await file.text();
+      customWordsInput.value = text;
+      parentStatusEl.textContent = `Loaded ${file.name}. Tap Use Custom Words.`;
+    });
+
+    window.addEventListener("load", () => {
+      loadSavedCustomWords();
+      loadSelectedSet();
+      if (state.selectedSet === CUSTOM_SET && state.customWords.length === 0) {
+        state.selectedSet = ALL_LEVELS;
+      }
+      buildLevelButtons();
+      resetGame();
+      initVoices();
+    });
+
+    if ("speechSynthesis" in window) {
+      window.speechSynthesis.onvoiceschanged = initVoices;
+    }
+  </script>
+</body>
+</html>
