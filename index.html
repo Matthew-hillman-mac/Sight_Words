@@ -1,0 +1,1898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <title>Rainbow Sight Words Deluxe</title>
+  <meta name="theme-color" content="#ff9ed2" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Sight Words" />
+  <style>
+    :root {
+      --bg-top: #fff7fd;
+      --bg-bottom: #eef8ff;
+      --card: rgba(255,255,255,.94);
+      --card-strong: rgba(255,255,255,.98);
+      --text: #5a4374;
+      --muted: #7b6a8f;
+      --green: #33c45d;
+      --green-dark: #1fa347;
+      --red: #ff5678;
+      --red-dark: #e33d61;
+      --yellow: #ffd96a;
+      --gold: #ffb84d;
+      --blue: #84ddff;
+      --pink: #ff9ecf;
+      --purple: #9b7bff;
+      --shadow: 0 16px 34px rgba(123,95,160,.14);
+      --shadow-soft: 0 8px 18px rgba(123,95,160,.08);
+      --radius-xl: 30px;
+      --radius-lg: 24px;
+      --radius-md: 18px;
+      --radius-pill: 999px;
+      --safe-top: env(safe-area-inset-top,0px);
+      --safe-bottom: env(safe-area-inset-bottom,0px);
+    }
+
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, #fff0f7 0%, transparent 34%),
+        radial-gradient(circle at top right, #edf7ff 0%, transparent 35%),
+        linear-gradient(180deg, var(--bg-top), var(--bg-bottom));
+    }
+
+    body {
+      padding: calc(12px + var(--safe-top)) 14px calc(28px + var(--safe-bottom));
+      overflow-x: hidden;
+    }
+
+    button, input, textarea {
+      font: inherit;
+    }
+
+    .app {
+      max-width: 640px;
+      margin: 0 auto;
+      display: grid;
+      gap: 14px;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: var(--radius-xl);
+      border: 1px solid rgba(255,255,255,.96);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .hero {
+      padding: 16px 14px 16px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.9), rgba(255,252,255,.78)),
+        linear-gradient(135deg, rgba(255,230,244,.45), rgba(233,247,255,.45));
+    }
+
+    .hero-top {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+
+    .sparkle-group {
+      position: relative;
+      height: 56px;
+    }
+
+    .sparkle {
+      position: absolute;
+      font-size: 18px;
+      animation: floaty 3s ease-in-out infinite;
+      opacity: .8;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    .sparkle.a { top: 2px; left: 14px; }
+    .sparkle.b { top: 24px; left: 44px; animation-delay: .7s; }
+    .sparkle.c { top: 3px; right: 16px; animation-delay: .4s; }
+    .sparkle.d { top: 25px; right: 46px; animation-delay: 1.1s; }
+
+    @keyframes floaty {
+      0%,100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-5px) scale(1.08); }
+    }
+
+    .rainbow-wrap {
+      margin: 0 auto;
+      width: 176px;
+      height: 90px;
+      position: relative;
+    }
+
+    .arc {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 999px 999px 0 0;
+      border-bottom: none;
+    }
+
+    .a1 { width: 176px; height: 86px; border: 10px solid #ff9dc7; top: 0; }
+    .a2 { width: 152px; height: 74px; border: 10px solid #ffbc6e; top: 12px; }
+    .a3 { width: 128px; height: 62px; border: 10px solid #ffe46a; top: 24px; }
+    .a4 { width: 104px; height: 50px; border: 10px solid #8de0a4; top: 36px; }
+    .a5 { width: 80px; height: 38px; border: 10px solid #8fd9ff; top: 48px; }
+
+    .cloud {
+      position: absolute;
+      bottom: 2px;
+      width: 42px;
+      height: 22px;
+      border-radius: 999px;
+      background: #fff;
+      box-shadow: 10px -7px 0 5px #fff, 23px 0 0 3px #fff;
+    }
+
+    .cloud.left { left: 18px; }
+    .cloud.right { right: 18px; }
+
+    .title {
+      margin: 0;
+      font-size: 1.84rem;
+      line-height: 1.06;
+      font-weight: 900;
+      letter-spacing: .01em;
+    }
+
+    .subtitle {
+      margin: 8px auto 8px;
+      max-width: 26rem;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--muted);
+    }
+
+    .unicorn-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    .unicorn {
+      font-size: 3.1rem;
+      transform-origin: center bottom;
+      animation: unicornBounce 2.9s ease-in-out infinite;
+      transition: transform .18s ease;
+      filter: drop-shadow(0 10px 12px rgba(255,158,207,.2));
+      user-select: none;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,.88);
+      color: var(--text);
+      border-radius: var(--radius-pill);
+      padding: 10px 14px;
+      box-shadow: var(--shadow-soft);
+      font-weight: 900;
+      font-size: .94rem;
+    }
+
+    @keyframes unicornBounce {
+      0%,100% { transform: translateY(0) rotate(0deg); }
+      25% { transform: translateY(-3px) rotate(-2deg); }
+      50% { transform: translateY(-8px) rotate(2deg); }
+      75% { transform: translateY(-2px) rotate(-1deg); }
+    }
+
+    .game {
+      padding: 14px;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: 14px;
+    }
+
+    .pill {
+      border: none;
+      border-radius: var(--radius-pill);
+      background: #fff;
+      color: var(--text);
+      padding: 10px 14px;
+      min-height: 44px;
+      font-size: .96rem;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 6px 14px rgba(120,104,160,.1);
+      transition: transform .08s ease, box-shadow .12s ease;
+    }
+
+    .pill:active { transform: scale(.985); }
+
+    .pill.active {
+      background: linear-gradient(135deg, #ffe7f3, #e7f5ff);
+      outline: 3px solid rgba(155,123,255,.18);
+    }
+
+    .word-card {
+      position: relative;
+      min-height: 252px;
+      border-radius: var(--radius-xl);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.97), rgba(255,250,255,.88));
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.7), var(--shadow);
+      display: grid;
+      align-items: center;
+      justify-items: center;
+      text-align: center;
+      padding: 22px 16px 26px;
+      overflow: hidden;
+    }
+
+    .word-card::before {
+      content: "";
+      position: absolute;
+      inset: auto -42px -60px;
+      height: 130px;
+      background:
+        radial-gradient(circle at 18% 24%, rgba(255,158,207,.18), transparent 30%),
+        radial-gradient(circle at 50% 30%, rgba(132,221,255,.15), transparent 28%),
+        radial-gradient(circle at 82% 18%, rgba(255,217,106,.16), transparent 30%);
+      pointer-events: none;
+    }
+
+    .word-card.practice-mode {
+      outline: 4px solid rgba(255,86,120,.12);
+    }
+
+    .mode-badge {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      z-index: 1;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,.92);
+      border-radius: var(--radius-pill);
+      padding: 8px 12px;
+      box-shadow: var(--shadow-soft);
+      font-size: .92rem;
+      font-weight: 900;
+      color: var(--text);
+    }
+
+    .big-word, .finish-text {
+      position: relative;
+      z-index: 1;
+      font-weight: 900;
+      color: #5b477c;
+      word-break: break-word;
+      transition: transform .18s ease, opacity .18s ease;
+    }
+
+    .big-word {
+      font-size: clamp(3.4rem, 15vw, 6rem);
+      line-height: 1;
+      letter-spacing: .02em;
+    }
+
+    .finish-text {
+      font-size: clamp(2.2rem, 9vw, 3.8rem);
+      line-height: 1.14;
+    }
+
+    .helper-box {
+      min-height: 44px;
+      display: grid;
+      place-items: center;
+      margin: 10px 0 8px;
+    }
+
+    .helper-bubble {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      max-width: 100%;
+      text-align: center;
+      background: linear-gradient(135deg, #fff3fa, #eef8ff);
+      color: var(--text);
+      border-radius: var(--radius-pill);
+      padding: 10px 14px;
+      font-size: .98rem;
+      font-weight: 900;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .feedback {
+      min-height: 34px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 10px;
+    }
+
+    .feedback-badge {
+      display: inline-block;
+      border-radius: var(--radius-pill);
+      padding: 8px 12px;
+      font-size: .96rem;
+      font-weight: 900;
+      color: white;
+      opacity: 0;
+      transform: scale(.96);
+      transition: 180ms ease;
+    }
+
+    .feedback-badge.show {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .feedback-good { background: linear-gradient(135deg, #38d66b, #1ead4d); }
+    .feedback-practice { background: linear-gradient(135deg, #ff6d88, #eb3f63); }
+    .feedback-note { background: linear-gradient(135deg, #8b7cff, #6ab9ff); }
+
+    .controls {
+      display: grid;
+      gap: 10px;
+    }
+
+    .btn {
+      width: 100%;
+      border: none;
+      border-radius: 24px;
+      min-height: 72px;
+      padding: 16px 18px;
+      font-size: 1.16rem;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 10px 18px rgba(109,88,148,.16);
+      transition: transform .08s ease, opacity .12s ease, filter .12s ease;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    .btn:active { transform: scale(.985); }
+
+    .btn-hear {
+      color: var(--text);
+      background: linear-gradient(135deg, #fff3b5, #ffdff1, #ddf2ff);
+    }
+
+    .btn-correct {
+      color: white;
+      background: linear-gradient(180deg, var(--green), var(--green-dark));
+    }
+
+    .btn-practice {
+      color: white;
+      background: linear-gradient(180deg, var(--red), var(--red-dark));
+    }
+
+    .sections {
+      display: grid;
+      gap: 12px;
+    }
+
+    .panel {
+      padding: 14px;
+      border-radius: var(--radius-lg);
+      background: rgba(255,255,255,.78);
+      border: 1px solid rgba(255,255,255,.95);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .panel-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+
+    .panel-title {
+      margin: 0;
+      font-size: 1.02rem;
+      font-weight: 900;
+      color: #654c82;
+    }
+
+    .small-note {
+      color: var(--muted);
+      font-size: .95rem;
+      font-weight: 700;
+      line-height: 1.4;
+    }
+
+    .stars {
+      font-size: 1.6rem;
+      line-height: 1.2;
+      letter-spacing: .08em;
+      min-height: 34px;
+      margin-bottom: 8px;
+    }
+
+    .rainbow-bar {
+      width: 100%;
+      height: 16px;
+      border-radius: var(--radius-pill);
+      background: #f3ecfb;
+      overflow: hidden;
+      box-shadow: inset 0 1px 3px rgba(90,67,116,.08);
+      margin-bottom: 12px;
+    }
+
+    .rainbow-fill {
+      width: 0%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #ff9ecf 0%, #ffbe6d 25%, #ffe26f 50%, #8ee1a5 75%, #8ad9ff 100%);
+      transition: width .25s ease;
+    }
+
+    .path {
+      position: relative;
+      height: 56px;
+      margin: 4px 0 10px;
+    }
+
+    .path-track {
+      position: absolute;
+      left: 18px;
+      right: 18px;
+      top: 22px;
+      height: 12px;
+      border-radius: var(--radius-pill);
+      background: linear-gradient(90deg, #ffd0e8 0%, #ffd88c 25%, #ffe873 50%, #a8e9bb 75%, #a8ddff 100%);
+      box-shadow: inset 0 1px 2px rgba(90,67,116,.10);
+    }
+
+    .path-cloud {
+      position: absolute;
+      top: 15px;
+      width: 24px;
+      height: 16px;
+      border-radius: var(--radius-pill);
+      background: white;
+      box-shadow: 7px -4px 0 3px white, 15px 0 0 2px white;
+    }
+
+    .path-cloud.left { left: 0; }
+    .path-cloud.right { right: 0; }
+
+    .path-unicorn {
+      position: absolute;
+      top: 0;
+      left: 8%;
+      transform: translateX(-50%);
+      font-size: 1.7rem;
+      transition: left .25s ease;
+    }
+
+    .path-goal {
+      position: absolute;
+      right: 2px;
+      top: 0;
+      font-size: 1.55rem;
+    }
+
+    .meta-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 2px;
+    }
+
+    .meta-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 12px;
+      border-radius: var(--radius-pill);
+      background: #fff;
+      color: var(--text);
+      font-size: .92rem;
+      font-weight: 900;
+      box-shadow: 0 4px 10px rgba(109,88,148,.06);
+    }
+
+    .reward-shelf {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+      min-height: 32px;
+    }
+
+    .sticker {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #fff8d1, #ffe2f1);
+      box-shadow: var(--shadow-soft);
+      font-size: 1.1rem;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      min-height: 30px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: var(--radius-pill);
+      padding: 8px 12px;
+      font-size: .96rem;
+      font-weight: 900;
+      border: 1px solid rgba(255,255,255,.95);
+      box-shadow: 0 4px 10px rgba(109,88,148,.06);
+      background: #f7f0ff;
+      color: #694b86;
+    }
+
+    .chip.practice {
+      background: linear-gradient(135deg, #ffd7e5, #ffc5dc);
+      color: #a33055;
+    }
+
+    .chip.done {
+      background: linear-gradient(135deg, #dcffe9, #bff5d0);
+      color: #177945;
+    }
+
+    .chip.current {
+      background: linear-gradient(135deg, #efe6ff, #d9efff);
+      color: #5b477c;
+      transform: scale(1.03);
+    }
+
+    .chip.neutral {
+      background: #f5f0fb;
+      color: #7a6690;
+    }
+
+    .chip-count {
+      min-width: 20px;
+      height: 20px;
+      padding: 0 6px;
+      border-radius: var(--radius-pill);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,.72);
+      font-size: .78rem;
+      line-height: 1;
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 10px;
+      border-radius: var(--radius-pill);
+      background: white;
+      font-size: .88rem;
+      font-weight: 800;
+      color: var(--text);
+      box-shadow: 0 4px 10px rgba(109,88,148,.05);
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .dot-current { background: #b7d9ff; }
+    .dot-done { background: #8fe0a8; }
+    .dot-practice { background: #ff9bb6; }
+    .dot-neutral { background: #d9cbe8; }
+
+    .row-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .secondary-btn, .tiny-btn, .file-btn {
+      border: none;
+      border-radius: var(--radius-md);
+      min-height: 46px;
+      padding: 12px 14px;
+      background: linear-gradient(135deg, #f4ebff, #eaf7ff);
+      color: var(--text);
+      font-size: .96rem;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: var(--shadow-soft);
+      -webkit-appearance: none;
+      appearance: none;
+      text-decoration: none;
+    }
+
+    .tiny-btn {
+      min-height: 38px;
+      padding: 9px 12px;
+      font-size: .88rem;
+    }
+
+    .secondary-btn.strong {
+      background: linear-gradient(135deg, #ffe8f5, #fff2c3);
+    }
+
+    .secondary-btn.danger {
+      background: linear-gradient(135deg, #ffe6ec, #ffd4df);
+      color: #8c3150;
+    }
+
+    .secondary-btn.full {
+      width: 100%;
+    }
+
+    .parent-toggle {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .toggle-arrow {
+      transition: transform .2s ease;
+      font-size: 1rem;
+    }
+
+    .toggle-arrow.open {
+      transform: rotate(180deg);
+    }
+
+    .hidden { display: none !important; }
+
+    .parent-panel {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px dashed rgba(123,95,160,.18);
+    }
+
+    .settings-grid {
+      display: grid;
+      gap: 10px;
+    }
+
+    .settings-grid.two {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    @media (max-width: 560px) {
+      .settings-grid.two {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .label {
+      display: block;
+      font-size: .9rem;
+      font-weight: 900;
+      color: #654c82;
+      margin-bottom: 6px;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 132px;
+      border: none;
+      resize: vertical;
+      border-radius: 20px;
+      padding: 14px;
+      background: rgba(255,255,255,.95);
+      color: var(--text);
+      box-shadow: inset 0 0 0 1px rgba(123,95,160,.12);
+    }
+
+    .count-note {
+      text-align: right;
+      font-size: .84rem;
+      font-weight: 800;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    .file-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .file-btn input {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .toggle-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .toggle-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 10px 12px;
+      background: rgba(255,255,255,.82);
+      border-radius: 18px;
+      box-shadow: 0 4px 10px rgba(109,88,148,.05);
+    }
+
+    .toggle-copy {
+      font-size: .94rem;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.35;
+    }
+
+    .switch {
+      position: relative;
+      width: 56px;
+      height: 32px;
+      flex: 0 0 auto;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+      position: absolute;
+    }
+
+    .slider {
+      position: absolute;
+      inset: 0;
+      border-radius: 999px;
+      background: #ddd4eb;
+      transition: background .2s ease;
+    }
+
+    .slider::before {
+      content: "";
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      left: 4px;
+      top: 4px;
+      border-radius: 50%;
+      background: white;
+      box-shadow: 0 2px 6px rgba(0,0,0,.15);
+      transition: transform .2s ease;
+    }
+
+    .switch input:checked + .slider {
+      background: linear-gradient(135deg, #ff9ecf, #8fd9ff);
+    }
+
+    .switch input:checked + .slider::before {
+      transform: translateX(24px);
+    }
+
+    .footer-note {
+      text-align: center;
+      font-size: .88rem;
+      font-weight: 800;
+      color: var(--muted);
+      padding: 4px 6px 0;
+      line-height: 1.45;
+    }
+
+    .message-line {
+      min-height: 22px;
+      text-align: center;
+      font-size: .97rem;
+      font-weight: 900;
+      color: #7a5698;
+    }
+
+    .confetti {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 100;
+    }
+
+    .piece {
+      position: absolute;
+      top: -20px;
+      font-size: 20px;
+      animation: fall linear forwards;
+      opacity: .96;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: .92;
+      }
+    }
+
+    .pulse {
+      animation: pulsePop 220ms ease;
+    }
+
+    .word-swap {
+      animation: wordSwap .2s ease;
+    }
+
+    @keyframes pulsePop {
+      0% { transform: scale(.97); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes wordSwap {
+      0% { transform: scale(.96); opacity: .45; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <section class="card hero">
+      <div class="hero-top">
+        <div class="sparkle-group" aria-hidden="true">
+          <div class="sparkle a">✨</div>
+          <div class="sparkle b">⭐</div>
+        </div>
+
+        <div class="rainbow-wrap" aria-hidden="true">
+          <div class="arc a1"></div>
+          <div class="arc a2"></div>
+          <div class="arc a3"></div>
+          <div class="arc a4"></div>
+          <div class="arc a5"></div>
+          <div class="cloud left"></div>
+          <div class="cloud right"></div>
+        </div>
+
+        <div class="sparkle-group" aria-hidden="true">
+          <div class="sparkle c">⭐</div>
+          <div class="sparkle d">✨</div>
+        </div>
+      </div>
+
+      <h1 class="title">Rainbow Sight Words Deluxe</h1>
+      <p class="subtitle">Big words, magical rewards, and a smart practice system that can handle lots of misses without getting stuck.</p>
+
+      <div class="unicorn-row">
+        <div class="unicorn" id="unicorn" aria-hidden="true">🦄</div>
+        <div class="hero-badge" id="setBadge">🌈 All Levels</div>
+      </div>
+    </section>
+
+    <section class="card game">
+      <div id="levelButtons" class="pill-row"></div>
+
+      <div id="wordCard" class="word-card">
+        <div id="modeBadge" class="mode-badge">🌟 New Word</div>
+        <div id="currentWord" class="big-word" aria-live="polite"></div>
+      </div>
+
+      <div class="helper-box">
+        <div id="helperBubble" class="helper-bubble">🪄 Tap Hear Word</div>
+      </div>
+
+      <div class="feedback" aria-live="polite">
+        <div id="feedbackBadge" class="feedback-badge">Great job!</div>
+      </div>
+
+      <div class="controls">
+        <button id="hearBtn" class="btn btn-hear" type="button">🔊 Hear Word</button>
+        <button id="correctBtn" class="btn btn-correct" type="button">✅ I Got It</button>
+        <button id="practiceBtn" class="btn btn-practice" type="button">❤️ Needs Practice</button>
+      </div>
+    </section>
+
+    <section class="sections">
+      <div class="panel">
+        <div class="panel-title-row">
+          <h2 class="panel-title">⭐ Progress & Rewards</h2>
+          <div class="meta-badge" id="wordCountBadge">0 / 0 mastered</div>
+        </div>
+
+        <div id="stars" class="stars">☆☆☆☆☆</div>
+
+        <div class="rainbow-bar" aria-hidden="true">
+          <div id="rainbowFill" class="rainbow-fill"></div>
+        </div>
+
+        <div class="path" aria-hidden="true">
+          <div class="path-cloud left"></div>
+          <div class="path-track"></div>
+          <div id="pathUnicorn" class="path-unicorn">🦄</div>
+          <div class="path-goal">⭐</div>
+          <div class="path-cloud right"></div>
+        </div>
+
+        <div id="progressText" class="small-note">Pick a set and start.</div>
+
+        <div class="meta-row">
+          <div id="streakBadge" class="meta-badge">🔥 Streak: 0</div>
+          <div id="treasureBadge" class="meta-badge">🎁 Treasures: 0</div>
+          <div id="practiceBadge" class="meta-badge">💖 Practice: 0</div>
+        </div>
+
+        <div id="rewardShelf" class="reward-shelf"></div>
+        <div id="messageLine" class="message-line"></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title-row">
+          <h2 class="panel-title">💖 Words To Practice</h2>
+          <div class="row-actions">
+            <button id="copyPracticeBtn" class="tiny-btn" type="button">Copy Practice Words</button>
+            <button id="copySummaryBtn" class="tiny-btn" type="button">Copy Full Summary</button>
+          </div>
+        </div>
+        <div id="practiceChips" class="chips"></div>
+        <div id="practiceEmpty" class="small-note">No practice words right now.</div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title-row">
+          <h2 class="panel-title">📚 Full Word List</h2>
+        </div>
+
+        <div class="legend">
+          <div class="legend-item"><span class="dot dot-current"></span>Current</div>
+          <div class="legend-item"><span class="dot dot-done"></span>Learned</div>
+          <div class="legend-item"><span class="dot dot-practice"></span>Needs practice</div>
+          <div class="legend-item"><span class="dot dot-neutral"></span>Not yet seen</div>
+        </div>
+
+        <div id="allWordsChips" class="chips"></div>
+      </div>
+
+      <div class="panel">
+        <button id="parentToggle" class="secondary-btn parent-toggle" type="button" aria-expanded="false">
+          <span>🛠 Parent Settings</span>
+          <span id="parentArrow" class="toggle-arrow">▾</span>
+        </button>
+
+        <div id="parentPanel" class="parent-panel hidden">
+          <div class="settings-grid">
+            <div>
+              <label class="label" for="customWordsInput">Custom words</label>
+              <textarea id="customWordsInput" placeholder="Paste words here&#10;one per line, or use commas&#10;&#10;the&#10;and&#10;you"></textarea>
+              <div id="customCount" class="count-note">0 words</div>
+            </div>
+
+            <div class="settings-grid two">
+              <button id="loadCurrentWordsBtn" class="secondary-btn" type="button">Load Current Words Into Editor</button>
+
+              <label class="file-btn">
+                📄 Import .txt / .csv
+                <input id="fileInput" type="file" accept=".txt,.csv,text/plain,text/csv" />
+              </label>
+
+              <button id="saveCustomBtn" class="secondary-btn strong" type="button">Use These Words As Custom List</button>
+              <button id="switchToCustomBtn" class="secondary-btn" type="button">Play Custom List</button>
+
+              <button id="restoreDefaultsBtn" class="secondary-btn" type="button">Remove Custom List</button>
+              <button id="startFreshBtn" class="secondary-btn danger" type="button">Start Fresh</button>
+            </div>
+
+            <div class="toggle-list">
+              <div class="toggle-item">
+                <div class="toggle-copy">
+                  <div>Auto-speak each new word</div>
+                  <div class="small-note">Helpful for newer readers.</div>
+                </div>
+                <label class="switch">
+                  <input id="autoSpeakToggle" type="checkbox" />
+                  <span class="slider"></span>
+                </label>
+              </div>
+
+              <div class="toggle-item">
+                <div class="toggle-copy">
+                  <div>Speak unicorn praise</div>
+                  <div class="small-note">Reads out “Great job!” style praise after correct answers.</div>
+                </div>
+                <label class="switch">
+                  <input id="speakPraiseToggle" type="checkbox" />
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <div class="small-note">Custom lists and progress save on this device. Custom words can be one per line, comma-separated, or copied from a spreadsheet.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="row-actions">
+          <button id="restartBtn" class="secondary-btn full" type="button">Start Over</button>
+          <button id="homeBtn" class="secondary-btn full" type="button">📱 How To Add To Home Screen</button>
+        </div>
+        <div id="homeHelp" class="footer-note hidden">On iPhone: open this page in Safari, tap Share, then tap Add to Home Screen.</div>
+      </div>
+    </section>
+  </div>
+
+  <div id="confetti" class="confetti" aria-hidden="true"></div>
+
+  <script>
+    const DEFAULT_LEVELS = {
+      "Level 1": [
+        "the","and","you","see","go","my","can","it","we","up",
+        "big","me","is","a","to","in","on","at","like","look"
+      ],
+      "Level 2": [
+        "come","here","blue","red","yellow","green","little","said","help","play",
+        "jump","run","find","make","where","one","two","three","for","not"
+      ],
+      "Level 3": [
+        "have","with","was","good","this","that","they","what","from","want",
+        "there","all","are","out","went","will","now","be","she","he"
+      ]
+    };
+
+    const ALL_LEVELS = "All Levels";
+    const CUSTOM_SET = "Custom List";
+    const NEWS_BEFORE_PRACTICE = 2;
+
+    const STORAGE = {
+      session: "rainbow-sight-words-deluxe-session-v4",
+      customWords: "rainbow-sight-words-deluxe-custom-words-v4",
+      settings: "rainbow-sight-words-deluxe-settings-v4"
+    };
+
+    const PRAISE_VISUAL = [
+      "Yay! You got it!",
+      "Super reading!",
+      "Nice job!",
+      "You are doing great!",
+      "Fantastic!"
+    ];
+
+    const PRAISE_SPOKEN = [
+      "Great job!",
+      "Super reader!",
+      "Nice work!",
+      "You got it!",
+      "Amazing!"
+    ];
+
+    const TRY_AGAIN_MESSAGES = [
+      "That is okay. We will try it again later.",
+      "Nice try. It is going on the practice list.",
+      "Good effort. This word will come back soon.",
+      "We can practice that one together."
+    ];
+
+    const TREASURES = ["⭐","💎","🌈","🦄","💖","🏆","✨","🪄"];
+
+    const state = {
+      selectedSet: ALL_LEVELS,
+      activeWords: [],
+      customWords: [],
+      newWordQueue: [],
+      practiceQueue: [],
+      completedWords: new Set(),
+      practiceWords: new Set(),
+      missCounts: {},
+      correctCounts: {},
+      currentWord: null,
+      currentSource: null,
+      newsSincePractice: 0,
+      streak: 0,
+      rewardCount: 0,
+      lastWord: null,
+      settings: {
+        autoSpeak: false,
+        speakPraise: false
+      }
+    };
+
+    const els = {
+      levelButtons: document.getElementById("levelButtons"),
+      currentWord: document.getElementById("currentWord"),
+      wordCard: document.getElementById("wordCard"),
+      modeBadge: document.getElementById("modeBadge"),
+      helperBubble: document.getElementById("helperBubble"),
+      feedbackBadge: document.getElementById("feedbackBadge"),
+      hearBtn: document.getElementById("hearBtn"),
+      correctBtn: document.getElementById("correctBtn"),
+      practiceBtn: document.getElementById("practiceBtn"),
+      stars: document.getElementById("stars"),
+      rainbowFill: document.getElementById("rainbowFill"),
+      pathUnicorn: document.getElementById("pathUnicorn"),
+      progressText: document.getElementById("progressText"),
+      wordCountBadge: document.getElementById("wordCountBadge"),
+      streakBadge: document.getElementById("streakBadge"),
+      treasureBadge: document.getElementById("treasureBadge"),
+      practiceBadge: document.getElementById("practiceBadge"),
+      rewardShelf: document.getElementById("rewardShelf"),
+      messageLine: document.getElementById("messageLine"),
+      practiceChips: document.getElementById("practiceChips"),
+      practiceEmpty: document.getElementById("practiceEmpty"),
+      allWordsChips: document.getElementById("allWordsChips"),
+      setBadge: document.getElementById("setBadge"),
+      restartBtn: document.getElementById("restartBtn"),
+      copyPracticeBtn: document.getElementById("copyPracticeBtn"),
+      copySummaryBtn: document.getElementById("copySummaryBtn"),
+      parentToggle: document.getElementById("parentToggle"),
+      parentPanel: document.getElementById("parentPanel"),
+      parentArrow: document.getElementById("parentArrow"),
+      customWordsInput: document.getElementById("customWordsInput"),
+      customCount: document.getElementById("customCount"),
+      loadCurrentWordsBtn: document.getElementById("loadCurrentWordsBtn"),
+      fileInput: document.getElementById("fileInput"),
+      saveCustomBtn: document.getElementById("saveCustomBtn"),
+      switchToCustomBtn: document.getElementById("switchToCustomBtn"),
+      restoreDefaultsBtn: document.getElementById("restoreDefaultsBtn"),
+      startFreshBtn: document.getElementById("startFreshBtn"),
+      autoSpeakToggle: document.getElementById("autoSpeakToggle"),
+      speakPraiseToggle: document.getElementById("speakPraiseToggle"),
+      homeBtn: document.getElementById("homeBtn"),
+      homeHelp: document.getElementById("homeHelp"),
+      confetti: document.getElementById("confetti"),
+      unicorn: document.getElementById("unicorn")
+    };
+
+    function uniqueWords(words) {
+      const seen = new Set();
+      const out = [];
+      words.forEach(raw => {
+        const word = String(raw || "").trim();
+        if (!word) return;
+        const key = word.toLowerCase();
+        if (seen.has(key)) return;
+        seen.add(key);
+        out.push(word);
+      });
+      return out;
+    }
+
+    function parseWords(text) {
+      return uniqueWords(
+        String(text || "")
+          .split(/[\n,\t;]+/)
+          .map(item => item.trim())
+          .filter(Boolean)
+      );
+    }
+
+    function wordsForSelectedSet() {
+      if (state.selectedSet === CUSTOM_SET) {
+        return state.customWords.length ? [...state.customWords] : allDefaultWords();
+      }
+      if (state.selectedSet === ALL_LEVELS) return allDefaultWords();
+      return [...(DEFAULT_LEVELS[state.selectedSet] || [])];
+    }
+
+    function allDefaultWords() {
+      return uniqueWords([
+        ...DEFAULT_LEVELS["Level 1"],
+        ...DEFAULT_LEVELS["Level 2"],
+        ...DEFAULT_LEVELS["Level 3"]
+      ]);
+    }
+
+    function buildLevelButtons() {
+      const sets = [ALL_LEVELS, ...Object.keys(DEFAULT_LEVELS)];
+      if (state.customWords.length) sets.push(CUSTOM_SET);
+
+      els.levelButtons.innerHTML = "";
+      sets.forEach(setName => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "pill" + (setName === state.selectedSet ? " active" : "");
+        btn.textContent = setName;
+        btn.addEventListener("click", () => {
+          if (setName === CUSTOM_SET && !state.customWords.length) return;
+          state.selectedSet = setName;
+          resetGame();
+        });
+        els.levelButtons.appendChild(btn);
+      });
+    }
+
+    function updateSetBadge() {
+      const label = state.selectedSet === CUSTOM_SET ? "🛠 Custom List" : "🌈 " + state.selectedSet;
+      els.setBadge.textContent = label;
+    }
+
+    function resetGame() {
+      const words = wordsForSelectedSet();
+      state.activeWords = [...words];
+      state.newWordQueue = [...words];
+      state.practiceQueue = [];
+      state.completedWords = new Set();
+      state.practiceWords = new Set();
+      state.missCounts = {};
+      state.correctCounts = {};
+      state.currentWord = null;
+      state.currentSource = null;
+      state.newsSincePractice = 0;
+      state.streak = 0;
+      state.rewardCount = 0;
+      state.lastWord = null;
+
+      clearFeedback();
+      setHelper("🪄 Tap Hear Word");
+      setMessage("");
+      updateSetBadge();
+      buildLevelButtons();
+      updateParentControls();
+      nextWord();
+      persistState();
+    }
+
+    function persistSettings() {
+      localStorage.setItem(STORAGE.settings, JSON.stringify(state.settings));
+    }
+
+    function persistCustomWords() {
+      localStorage.setItem(STORAGE.customWords, JSON.stringify(state.customWords));
+    }
+
+    function persistState() {
+      const payload = {
+        selectedSet: state.selectedSet,
+        activeWords: state.activeWords,
+        customWords: state.customWords,
+        newWordQueue: state.newWordQueue,
+        practiceQueue: state.practiceQueue,
+        completedWords: [...state.completedWords],
+        practiceWords: [...state.practiceWords],
+        missCounts: state.missCounts,
+        correctCounts: state.correctCounts,
+        currentWord: state.currentWord,
+        currentSource: state.currentSource,
+        newsSincePractice: state.newsSincePractice,
+        streak: state.streak,
+        rewardCount: state.rewardCount,
+        lastWord: state.lastWord
+      };
+      localStorage.setItem(STORAGE.session, JSON.stringify(payload));
+      persistCustomWords();
+      persistSettings();
+    }
+
+    function loadSavedData() {
+      try {
+        const savedSettings = JSON.parse(localStorage.getItem(STORAGE.settings) || "{}");
+        state.settings.autoSpeak = !!savedSettings.autoSpeak;
+        state.settings.speakPraise = !!savedSettings.speakPraise;
+      } catch (err) {}
+
+      try {
+        const savedCustom = JSON.parse(localStorage.getItem(STORAGE.customWords) || "[]");
+        state.customWords = Array.isArray(savedCustom) ? uniqueWords(savedCustom) : [];
+      } catch (err) {
+        state.customWords = [];
+      }
+
+      let restored = false;
+      try {
+        const saved = JSON.parse(localStorage.getItem(STORAGE.session) || "null");
+        if (saved && Array.isArray(saved.activeWords) && saved.activeWords.length) {
+          state.selectedSet = saved.selectedSet || ALL_LEVELS;
+          state.activeWords = uniqueWords(saved.activeWords);
+          state.customWords = Array.isArray(saved.customWords) ? uniqueWords(saved.customWords) : state.customWords;
+          state.newWordQueue = Array.isArray(saved.newWordQueue) ? saved.newWordQueue.slice() : [];
+          state.practiceQueue = Array.isArray(saved.practiceQueue) ? saved.practiceQueue.slice() : [];
+          state.completedWords = new Set(Array.isArray(saved.completedWords) ? saved.completedWords : []);
+          state.practiceWords = new Set(Array.isArray(saved.practiceWords) ? saved.practiceWords : []);
+          state.missCounts = typeof saved.missCounts === "object" && saved.missCounts ? saved.missCounts : {};
+          state.correctCounts = typeof saved.correctCounts === "object" && saved.correctCounts ? saved.correctCounts : {};
+          state.currentWord = saved.currentWord || null;
+          state.currentSource = saved.currentSource || null;
+          state.newsSincePractice = Number(saved.newsSincePractice || 0);
+          state.streak = Number(saved.streak || 0);
+          state.rewardCount = Number(saved.rewardCount || 0);
+          state.lastWord = saved.lastWord || saved.currentWord || null;
+          restored = true;
+        }
+      } catch (err) {}
+
+      if (!restored) {
+        state.selectedSet = ALL_LEVELS;
+        resetGame();
+        return;
+      }
+
+      renderAll();
+      setHelper(state.currentWord ? "✨ Welcome back!" : "🪄 Tap Hear Word");
+      setMessage("Resumed your saved game.");
+      buildLevelButtons();
+      updateSetBadge();
+      updateParentControls();
+      persistState();
+    }
+
+    function updateParentControls() {
+      els.autoSpeakToggle.checked = state.settings.autoSpeak;
+      els.speakPraiseToggle.checked = state.settings.speakPraise;
+      els.customWordsInput.value = state.customWords.join("\n");
+      updateCustomWordCount();
+      els.switchToCustomBtn.disabled = !state.customWords.length;
+      els.switchToCustomBtn.style.opacity = state.customWords.length ? "1" : ".6";
+    }
+
+    function updateCustomWordCount() {
+      const count = parseWords(els.customWordsInput.value).length;
+      els.customCount.textContent = `${count} word${count === 1 ? "" : "s"}`;
+    }
+
+    function setHelper(text) {
+      els.helperBubble.textContent = text;
+    }
+
+    function setMessage(text) {
+      els.messageLine.textContent = text;
+    }
+
+    function showFeedback(text, kind) {
+      els.feedbackBadge.textContent = text;
+      els.feedbackBadge.className = "feedback-badge show " + (
+        kind === "practice" ? "feedback-practice" :
+        kind === "note" ? "feedback-note" :
+        "feedback-good"
+      );
+      clearTimeout(showFeedback._timer);
+      showFeedback._timer = setTimeout(clearFeedback, 1000);
+    }
+
+    function clearFeedback() {
+      els.feedbackBadge.className = "feedback-badge";
+    }
+
+    function bounceWordCard() {
+      els.wordCard.classList.remove("pulse");
+      void els.wordCard.offsetWidth;
+      els.wordCard.classList.add("pulse");
+    }
+
+    function hopUnicorn() {
+      els.unicorn.style.transform = "translateY(-8px) scale(1.08)";
+      clearTimeout(hopUnicorn._timer);
+      hopUnicorn._timer = setTimeout(() => {
+        els.unicorn.style.transform = "";
+      }, 220);
+    }
+
+    function removeAll(arr, word) {
+      let i = arr.length;
+      while (i--) {
+        if (arr[i] === word) arr.splice(i, 1);
+      }
+    }
+
+    function queueForPractice(word) {
+      removeAll(state.practiceQueue, word);
+      state.practiceQueue.push(word);
+    }
+
+    function chooseNextWord() {
+      if (!state.newWordQueue.length && !state.practiceQueue.length) return null;
+
+      let source;
+      if (!state.newWordQueue.length) {
+        source = "practice";
+      } else if (!state.practiceQueue.length) {
+        source = "new";
+      } else if (state.newsSincePractice >= NEWS_BEFORE_PRACTICE) {
+        source = "practice";
+      } else {
+        source = "new";
+      }
+
+      let nextWord;
+      if (source === "new") {
+        nextWord = state.newWordQueue.shift();
+        state.newsSincePractice += 1;
+      } else {
+        nextWord = state.practiceQueue.shift();
+        state.newsSincePractice = 0;
+
+        if (nextWord === state.lastWord) {
+          const altIndex = state.practiceQueue.findIndex(word => word !== nextWord);
+          if (altIndex !== -1) {
+            const alt = state.practiceQueue.splice(altIndex, 1)[0];
+            state.practiceQueue.unshift(nextWord);
+            nextWord = alt;
+          } else if (state.newWordQueue.length) {
+            state.practiceQueue.unshift(nextWord);
+            source = "new";
+            nextWord = state.newWordQueue.shift();
+            state.newsSincePractice += 1;
+          }
+        }
+      }
+
+      return { word: nextWord, source };
+    }
+
+    function nextWord() {
+      const picked = chooseNextWord();
+      state.currentWord = picked ? picked.word : null;
+      state.currentSource = picked ? picked.source : null;
+
+      if (!state.currentWord) {
+        finishGame();
+        persistState();
+        return;
+      }
+
+      state.lastWord = state.currentWord;
+      renderCurrentWord();
+
+      if (state.settings.autoSpeak) {
+        clearTimeout(nextWord._speakTimer);
+        nextWord._speakTimer = setTimeout(() => speakWord(state.currentWord), 220);
+      }
+
+      persistState();
+    }
+
+    function renderCurrentWord() {
+      els.currentWord.className = "big-word word-swap";
+      els.currentWord.textContent = state.currentWord;
+      els.wordCard.classList.toggle("practice-mode", state.currentSource === "practice");
+
+      if (state.currentSource === "practice" && !state.newWordQueue.length) {
+        els.modeBadge.textContent = "💖 Practice Round";
+        setHelper("🦄 Practice round. Let’s fix the tricky words.");
+      } else if (state.currentSource === "practice") {
+        els.modeBadge.textContent = "💖 Practice Word";
+        setHelper("🦄 This word came back for extra practice.");
+      } else {
+        els.modeBadge.textContent = "🌟 New Word";
+        setHelper("🪄 Listen, then tap the button.");
+      }
+
+      enablePlayButtons(true);
+      renderAll(false);
+    }
+
+    function finishGame() {
+      els.currentWord.className = "finish-text";
+      els.currentWord.innerHTML = "🌈 You finished!<br>Great job!";
+      els.modeBadge.textContent = "🏁 All Done";
+      els.wordCard.classList.remove("practice-mode");
+      setHelper("🦄 You helped the unicorn finish the rainbow!");
+      showFeedback("Amazing!", "good");
+      setMessage("All words are mastered.");
+      enablePlayButtons(false);
+      launchConfetti(28);
+      renderAll(false);
+    }
+
+    function enablePlayButtons(enabled) {
+      [els.hearBtn, els.correctBtn, els.practiceBtn].forEach(btn => {
+        btn.disabled = !enabled;
+        btn.style.opacity = enabled ? "1" : ".6";
+        btn.style.cursor = enabled ? "pointer" : "default";
+      });
+    }
+
+    function markCorrect() {
+      const word = state.currentWord;
+      if (!word) return;
+
+      state.completedWords.add(word);
+      state.practiceWords.delete(word);
+      state.correctCounts[word] = (state.correctCounts[word] || 0) + 1;
+      removeAll(state.practiceQueue, word);
+
+      state.streak += 1;
+
+      const newRewardCount = Math.floor(state.completedWords.size / 5);
+      if (newRewardCount > state.rewardCount) {
+        state.rewardCount = newRewardCount;
+        launchConfetti(14);
+        setMessage(`${TREASURES[(state.rewardCount - 1) % TREASURES.length]} Treasure earned!`);
+      } else {
+        setMessage("");
+      }
+
+      showFeedback("Great job!", "good");
+      setHelper("🦄 " + randomFrom(PRAISE_VISUAL));
+      bounceWordCard();
+      hopUnicorn();
+      launchConfetti(8);
+
+      if (state.settings.speakPraise) {
+        speakText(randomFrom(PRAISE_SPOKEN));
+      }
+
+      nextWord();
+    }
+
+    function markNeedsPractice() {
+      const word = state.currentWord;
+      if (!word) return;
+
+      state.streak = 0;
+      state.missCounts[word] = (state.missCounts[word] || 0) + 1;
+      state.practiceWords.add(word);
+      queueForPractice(word);
+
+      showFeedback("We will practice it again!", "practice");
+      setHelper("🦄 " + randomFrom(TRY_AGAIN_MESSAGES));
+      setMessage("");
+      bounceWordCard();
+      hopUnicorn();
+
+      nextWord();
+    }
+
+    function renderProgress() {
+      const total = state.activeWords.length || 0;
+      const learned = state.completedWords.size;
+      const practiceCount = state.practiceWords.size;
+      const ratio = total ? learned / total : 0;
+      const filledStars = Math.max(0, Math.min(5, Math.round(ratio * 5)));
+
+      els.stars.textContent = "★".repeat(filledStars) + "☆".repeat(5 - filledStars);
+      els.rainbowFill.style.width = (ratio * 100).toFixed(1) + "%";
+      els.pathUnicorn.style.left = `${8 + ratio * 84}%`;
+
+      els.wordCountBadge.textContent = `${learned} / ${total} mastered`;
+      els.streakBadge.textContent = `🔥 Streak: ${state.streak}`;
+      els.treasureBadge.textContent = `🎁 Treasures: ${state.rewardCount}`;
+      els.practiceBadge.textContent = `💖 Practice: ${practiceCount}`;
+
+      if (!state.currentWord && total && !state.newWordQueue.length && !state.practiceQueue.length) {
+        els.progressText.textContent = `You mastered all ${total} words.`;
+      } else if (state.currentSource === "practice" && !state.newWordQueue.length) {
+        els.progressText.textContent = `Practice round: ${practiceCount} word${practiceCount === 1 ? "" : "s"} still to fix.`;
+      } else {
+        els.progressText.textContent = `New left: ${state.newWordQueue.length} • Practice waiting: ${state.practiceQueue.length}`;
+      }
+    }
+
+    function renderRewards() {
+      els.rewardShelf.innerHTML = "";
+      if (!state.rewardCount) {
+        const placeholder = document.createElement("div");
+        placeholder.className = "small-note";
+        placeholder.textContent = "Earn a treasure for every 5 mastered words.";
+        els.rewardShelf.appendChild(placeholder);
+        return;
+      }
+
+      for (let i = 0; i < state.rewardCount; i += 1) {
+        const sticker = document.createElement("div");
+        sticker.className = "sticker";
+        sticker.textContent = TREASURES[i % TREASURES.length];
+        els.rewardShelf.appendChild(sticker);
+      }
+    }
+
+    function renderPracticeList() {
+      els.practiceChips.innerHTML = "";
+      const words = state.activeWords.filter(word => state.practiceWords.has(word));
+
+      if (!words.length) {
+        els.practiceEmpty.style.display = "block";
+        return;
+      }
+
+      els.practiceEmpty.style.display = "none";
+      words.forEach(word => {
+        const chip = document.createElement("div");
+        chip.className = "chip practice";
+        chip.innerHTML = `${escapeHtml(word)}<span class="chip-count">${state.missCounts[word] || 1}</span>`;
+        els.practiceChips.appendChild(chip);
+      });
+    }
+
+    function renderAllWords() {
+      els.allWordsChips.innerHTML = "";
+      state.activeWords.forEach(word => {
+        const chip = document.createElement("div");
+        let statusClass = "neutral";
+        let countMarkup = "";
+
+        if (word === state.currentWord) statusClass = "current";
+        else if (state.completedWords.has(word)) statusClass = "done";
+        else if (state.practiceWords.has(word)) statusClass = "practice";
+
+        if (state.missCounts[word]) {
+          countMarkup = `<span class="chip-count">${state.missCounts[word]}</span>`;
+        }
+
+        chip.className = `chip ${statusClass}`;
+        chip.innerHTML = `${escapeHtml(word)}${countMarkup}`;
+        els.allWordsChips.appendChild(chip);
+      });
+    }
+
+    function renderAll(updateCurrentWordToo = true) {
+      if (updateCurrentWordToo && state.currentWord) {
+        renderCurrentWord();
+        return;
+      }
+      renderProgress();
+      renderRewards();
+      renderPracticeList();
+      renderAllWords();
+      updateSetBadge();
+      updateParentControls();
+      buildLevelButtons();
+    }
+
+    function launchConfetti(count) {
+      els.confetti.innerHTML = "";
+      const pieces = ["✨","⭐","🌈","🦄","💖","💎"];
+
+      for (let i = 0; i < count; i += 1) {
+        const piece = document.createElement("span");
+        piece.className = "piece";
+        piece.textContent = pieces[Math.floor(Math.random() * pieces.length)];
+        piece.style.left = Math.random() * 100 + "vw";
+        piece.style.animationDuration = (2.5 + Math.random() * 2.3) + "s";
+        piece.style.animationDelay = (Math.random() * 0.25) + "s";
+        els.confetti.appendChild(piece);
+      }
+
+      clearTimeout(launchConfetti._timer);
+      launchConfetti._timer = setTimeout(() => {
+        els.confetti.innerHTML = "";
+      }, 4500);
+    }
+
+    function randomFrom(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;");
+    }
+
+    function speakText(text) {
+      if (!("speechSynthesis" in window) || !text) return;
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.rate = 0.9;
+      utterance.pitch = 1.08;
+      utterance.volume = 1;
+      const voices = window.speechSynthesis.getVoices();
+      const preferred =
+        voices.find(v => /Samantha/i.test(v.name)) ||
+        voices.find(v => /Ava|Allison|Karen|Moira/i.test(v.name)) ||
+        voices.find(v => /en-US|en_US/i.test(v.lang)) ||
+        voices[0];
+      if (preferred) utterance.voice = preferred;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function speakWord(word) {
+      speakText(word);
+    }
+
+    function copyText(text, successMessage) {
+      if (!text) return;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+          showFeedback(successMessage, "note");
+        }).catch(() => {
+          fallbackCopy(text, successMessage);
+        });
+      } else {
+        fallbackCopy(text, successMessage);
+      }
+    }
+
+    function fallbackCopy(text, successMessage) {
+      const temp = document.createElement("textarea");
+      temp.value = text;
+      document.body.appendChild(temp);
+      temp.select();
+      document.execCommand("copy");
+      temp.remove();
+      showFeedback(successMessage, "note");
+    }
+
+    function practiceSummaryText() {
+      const practiceWords = state.activeWords.filter(word => state.practiceWords.has(word));
+      if (!practiceWords.length) return "No practice words right now.";
+      return practiceWords.map(word => {
+        const misses = state.missCounts[word] || 0;
+        return `${word}${misses ? ` (${misses} miss${misses === 1 ? "" : "es"})` : ""}`;
+      }).join(", ");
+    }
+
+    function fullSummaryText() {
+      const learned = state.activeWords.filter(word => state.completedWords.has(word));
+      const practice = state.activeWords.filter(word => state.practiceWords.has(word));
+      const untouched = state.activeWords.filter(word => !state.completedWords.has(word) && !state.practiceWords.has(word) && word !== state.currentWord);
+
+      const lines = [
+        `Set: ${state.selectedSet}`,
+        `Mastered: ${learned.length}/${state.activeWords.length}`,
+        learned.length ? `Learned words: ${learned.join(", ")}` : "Learned words: none yet",
+        practice.length ? `Needs practice: ${practice.map(word => `${word} (${state.missCounts[word] || 0})`).join(", ")}` : "Needs practice: none",
+        untouched.length ? `Still coming up: ${untouched.join(", ")}` : "Still coming up: none"
+      ];
+
+      if (state.currentWord) lines.splice(2, 0, `Current word: ${state.currentWord}`);
+      return lines.join("\n");
+    }
+
+    function useCustomWords(words) {
+      const cleaned = uniqueWords(words);
+      if (!cleaned.length) {
+        showFeedback("Add at least one word first.", "practice");
+        return;
+      }
+
+      state.customWords = cleaned;
+      state.selectedSet = CUSTOM_SET;
+      persistCustomWords();
+      resetGame();
+      showFeedback("Custom list saved.", "note");
+      setMessage("Custom list is ready.");
+    }
+
+    function removeCustomWords() {
+      state.customWords = [];
+      localStorage.removeItem(STORAGE.customWords);
+      if (state.selectedSet === CUSTOM_SET) {
+        state.selectedSet = ALL_LEVELS;
+      }
+      resetGame();
+      showFeedback("Custom list removed.", "note");
+      setMessage("");
+    }
+
+    function startFresh() {
+      localStorage.removeItem(STORAGE.session);
+      resetGame();
+      showFeedback("Started fresh.", "note");
+      setMessage("");
+    }
+
+    function toggleParentPanel() {
+      const open = els.parentPanel.classList.toggle("hidden");
+      const isExpanded = !open;
+      els.parentToggle.setAttribute("aria-expanded", String(isExpanded));
+      els.parentArrow.classList.toggle("open", isExpanded);
+    }
+
+    els.hearBtn.addEventListener("click", () => {
+      if (state.currentWord) speakWord(state.currentWord);
+    });
+
+    els.correctBtn.addEventListener("click", markCorrect);
+    els.practiceBtn.addEventListener("click", markNeedsPractice);
+
+    els.restartBtn.addEventListener("click", () => {
+      if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+      resetGame();
+    });
+
+    els.copyPracticeBtn.addEventListener("click", () => {
+      copyText(practiceSummaryText(), "Practice words copied.");
+    });
+
+    els.copySummaryBtn.addEventListener("click", () => {
+      copyText(fullSummaryText(), "Full summary copied.");
+    });
+
+    els.parentToggle.addEventListener("click", toggleParentPanel);
+
+    els.customWordsInput.addEventListener("input", updateCustomWordCount);
+
+    els.loadCurrentWordsBtn.addEventListener("click", () => {
+      els.customWordsInput.value = state.activeWords.join("\n");
+      updateCustomWordCount();
+      showFeedback("Current words loaded into editor.", "note");
+    });
+
+    els.fileInput.addEventListener("change", async event => {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      const text = await file.text();
+      els.customWordsInput.value = parseWords(text).join("\n");
+      updateCustomWordCount();
+      showFeedback("Words imported.", "note");
+      event.target.value = "";
+    });
+
+    els.saveCustomBtn.addEventListener("click", () => {
+      useCustomWords(parseWords(els.customWordsInput.value));
+    });
+
+    els.switchToCustomBtn.addEventListener("click", () => {
+      if (!state.customWords.length) {
+        showFeedback("Save a custom list first.", "practice");
+        return;
+      }
+      state.selectedSet = CUSTOM_SET;
+      resetGame();
+    });
+
+    els.restoreDefaultsBtn.addEventListener("click", removeCustomWords);
+    els.startFreshBtn.addEventListener("click", startFresh);
+
+    els.autoSpeakToggle.addEventListener("change", event => {
+      state.settings.autoSpeak = event.target.checked;
+      persistSettings();
+      showFeedback("Auto-speak updated.", "note");
+    });
+
+    els.speakPraiseToggle.addEventListener("change", event => {
+      state.settings.speakPraise = event.target.checked;
+      persistSettings();
+      showFeedback("Praise voice updated.", "note");
+    });
+
+    els.homeBtn.addEventListener("click", () => {
+      els.homeHelp.classList.toggle("hidden");
+    });
+
+    window.addEventListener("load", () => {
+      loadSavedData();
+      buildLevelButtons();
+      updateSetBadge();
+      updateParentControls();
+      renderAll(false);
+      if ("speechSynthesis" in window) window.speechSynthesis.getVoices();
+    });
+
+    if ("speechSynthesis" in window) {
+      window.speechSynthesis.onvoiceschanged = () => {
+        window.speechSynthesis.getVoices();
+      };
+    }
+  </script>
+</body>
+</html>
