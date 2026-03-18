@@ -1,0 +1,2163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Star Words</title>
+  <meta name="theme-color" content="#f49bd6" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Star Words" />
+  <style>
+    :root {
+      --bg1: #fff8fe;
+      --bg2: #eef7ff;
+      --card: rgba(255,255,255,.9);
+      --card-strong: rgba(255,255,255,.96);
+      --text: #563f72;
+      --muted: #7f6f95;
+      --green1: #36d56a;
+      --green2: #1ea84b;
+      --red1: #ff6d8c;
+      --red2: #eb4768;
+      --gold1: #ffd86c;
+      --gold2: #ffb947;
+      --blue1: #9ae0ff;
+      --blue2: #69bdf7;
+      --purple1: #ac8cff;
+      --purple2: #8868ec;
+      --pink1: #ffb7de;
+      --pink2: #ff93cb;
+      --line: rgba(255,255,255,.82);
+      --shadow: 0 16px 36px rgba(101,81,136,.15);
+      --shadow-soft: 0 10px 20px rgba(101,81,136,.1);
+      --radius-xl: 30px;
+      --radius-lg: 22px;
+      --radius-md: 18px;
+      --radius-pill: 999px;
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+      --chip-bg: #f6effc;
+      --chip-alt: #edf7ff;
+      --trail-start: #ffd8ec;
+      --trail-end: #9fdcff;
+      --accent-grad: linear-gradient(135deg, var(--pink1), var(--blue1));
+    }
+    body.theme-dino {
+      --bg1: #fff9ef;
+      --bg2: #eef8ef;
+      --text: #5a4a39;
+      --muted: #7b6a56;
+      --green1: #56ca55;
+      --green2: #2f9f35;
+      --red1: #ff8457;
+      --red2: #df5732;
+      --gold1: #ffd66e;
+      --gold2: #ffb14c;
+      --blue1: #b3e1ff;
+      --blue2: #77c4f5;
+      --purple1: #a390ff;
+      --purple2: #7d68e6;
+      --pink1: #ffc489;
+      --pink2: #ff9a62;
+      --chip-bg: #faf1e1;
+      --chip-alt: #edf8e8;
+      --trail-start: #ffd49a;
+      --trail-end: #9cdd9d;
+      --accent-grad: linear-gradient(135deg, #ffd489, #b7f0b8);
+    }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(255,198,227,.34), transparent 34%),
+        radial-gradient(circle at top right, rgba(188,229,255,.36), transparent 34%),
+        linear-gradient(180deg, var(--bg1), var(--bg2));
+    }
+    body {
+      padding: calc(10px + var(--safe-top)) 12px calc(28px + var(--safe-bottom));
+    }
+    button, select, input, textarea { font: inherit; color: inherit; }
+    button { touch-action: manipulation; }
+    .app {
+      max-width: 760px;
+      margin: 0 auto;
+      display: grid;
+      gap: 14px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      overflow: hidden;
+    }
+    .stage-card {
+      padding: 14px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,255,255,.88)),
+        linear-gradient(135deg, rgba(255,219,239,.92), rgba(222,244,255,.92));
+    }
+    body.theme-dino .stage-card {
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,255,255,.9)),
+        linear-gradient(135deg, rgba(255,229,198,.94), rgba(229,247,225,.92));
+    }
+    .topline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+    .brand-mascot {
+      width: 58px;
+      height: 58px;
+      display: grid;
+      place-items: center;
+      border-radius: 20px;
+      font-size: 2rem;
+      background: rgba(255,255,255,.72);
+      box-shadow: var(--shadow-soft);
+      flex: none;
+    }
+    .brand-copy h1 {
+      margin: 0;
+      font-size: 1.45rem;
+      line-height: 1;
+      font-weight: 900;
+      letter-spacing: .01em;
+    }
+    .brand-copy p {
+      margin: 5px 0 0;
+      font-size: .93rem;
+      color: var(--muted);
+      font-weight: 700;
+      line-height: 1.25;
+    }
+    .icon-btn {
+      border: none;
+      background: rgba(255,255,255,.85);
+      border-radius: 16px;
+      min-width: 48px;
+      min-height: 48px;
+      box-shadow: var(--shadow-soft);
+      font-size: 1.1rem;
+      font-weight: 900;
+      cursor: pointer;
+    }
+    .scroll-row {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: none;
+      margin-bottom: 10px;
+    }
+    .scroll-row::-webkit-scrollbar { display: none; }
+    .tab {
+      white-space: nowrap;
+      border: none;
+      border-radius: var(--radius-pill);
+      padding: 10px 14px;
+      min-height: 44px;
+      background: rgba(255,255,255,.88);
+      box-shadow: 0 7px 14px rgba(99,79,134,.08);
+      font-weight: 900;
+      font-size: .95rem;
+      cursor: pointer;
+      flex: none;
+    }
+    .tab.active {
+      background: var(--accent-grad);
+      color: white;
+    }
+    .mini-actions {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .mini-btn {
+      border: none;
+      border-radius: 18px;
+      min-height: 48px;
+      padding: 10px 12px;
+      background: rgba(255,255,255,.88);
+      box-shadow: 0 8px 16px rgba(99,79,134,.08);
+      font-weight: 900;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-align: center;
+    }
+    .mini-bubble {
+      min-width: 22px;
+      padding: 3px 7px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.28);
+      font-size: .78rem;
+      line-height: 1;
+    }
+    .hero-stage {
+      position: relative;
+      overflow: hidden;
+      border-radius: 28px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,255,255,.88)),
+        linear-gradient(135deg, rgba(255,228,241,.94), rgba(227,246,255,.94));
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.85), var(--shadow);
+      padding: 18px 16px 16px;
+      min-height: 300px;
+      margin-bottom: 12px;
+      display: grid;
+      align-content: start;
+      justify-items: center;
+      text-align: center;
+    }
+    body.theme-dino .hero-stage {
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,255,255,.9)),
+        linear-gradient(135deg, rgba(255,238,213,.96), rgba(234,248,226,.92));
+    }
+    .hero-stage::before,
+    .hero-stage::after {
+      content: "";
+      position: absolute;
+      border-radius: 999px;
+      pointer-events: none;
+    }
+    .hero-stage::before {
+      width: 220px;
+      height: 220px;
+      right: -40px;
+      top: -70px;
+      background: radial-gradient(circle, rgba(255,255,255,.48), transparent 65%);
+    }
+    .hero-stage::after {
+      width: 200px;
+      height: 120px;
+      left: -40px;
+      bottom: -40px;
+      background: radial-gradient(circle, rgba(255,255,255,.48), transparent 70%);
+    }
+    .art {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: .95;
+    }
+    .art .sparkle {
+      position: absolute;
+      animation: floaty 3s ease-in-out infinite;
+      font-size: 18px;
+    }
+    .art .s1 { left: 24px; top: 28px; }
+    .art .s2 { right: 30px; top: 36px; animation-delay: .5s; }
+    .art .s3 { left: 48px; bottom: 70px; animation-delay: 1s; }
+    .art .s4 { right: 52px; bottom: 80px; animation-delay: 1.4s; }
+    .rainbow {
+      position: absolute;
+      left: 50%;
+      top: 18px;
+      transform: translateX(-50%);
+      width: 170px;
+      height: 88px;
+      border-radius: 999px 999px 0 0;
+      border: 12px solid #ff9ed0;
+      border-bottom: none;
+      opacity: .28;
+    }
+    .rainbow::before,
+    .rainbow::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 999px 999px 0 0;
+      border-bottom: none;
+    }
+    .rainbow::before {
+      width: 134px;
+      height: 68px;
+      top: 10px;
+      border: 11px solid #ffd96f;
+      border-bottom: none;
+    }
+    .rainbow::after {
+      width: 98px;
+      height: 48px;
+      top: 20px;
+      border: 10px solid #99e1ff;
+      border-bottom: none;
+    }
+    .volcano {
+      position: absolute;
+      left: 50%;
+      top: 26px;
+      transform: translateX(-50%);
+      width: 148px;
+      height: 92px;
+      opacity: .3;
+      display: none;
+    }
+    body.theme-dino .volcano { display: block; }
+    body.theme-dino .rainbow { display: none; }
+    .volcano .mount {
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      transform: translateX(-50%);
+      width: 132px;
+      height: 78px;
+      background: linear-gradient(180deg, #8e6d51, #5d4330);
+      clip-path: polygon(18% 100%, 82% 100%, 68% 40%, 56% 25%, 44% 25%, 32% 40%);
+      border-radius: 12px;
+    }
+    .volcano .lava {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      transform: translateX(-50%);
+      width: 46px;
+      height: 30px;
+      background: linear-gradient(180deg, #ffe780, #ff814f);
+      border-radius: 999px 999px 16px 16px;
+    }
+    .mode-chip {
+      position: relative;
+      z-index: 1;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: var(--radius-pill);
+      background: rgba(255,255,255,.92);
+      box-shadow: var(--shadow-soft);
+      font-size: .92rem;
+      font-weight: 900;
+      margin-bottom: 12px;
+    }
+    .prompt {
+      position: relative;
+      z-index: 1;
+      display: inline-block;
+      padding: 10px 14px;
+      border-radius: var(--radius-pill);
+      background: linear-gradient(135deg, rgba(255,244,201,.96), rgba(245,236,255,.96));
+      box-shadow: var(--shadow-soft);
+      font-size: .96rem;
+      font-weight: 900;
+      color: var(--text);
+      max-width: 95%;
+      line-height: 1.3;
+      margin-bottom: 12px;
+    }
+    .word-text {
+      position: relative;
+      z-index: 1;
+      font-size: clamp(3.6rem, 14vw, 6rem);
+      line-height: 1;
+      font-weight: 1000;
+      letter-spacing: .02em;
+      margin: 6px 0 14px;
+      text-shadow: 0 8px 18px rgba(255,255,255,.55);
+      word-break: break-word;
+    }
+    .dots {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      min-height: 18px;
+      margin-bottom: 14px;
+    }
+    .dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 999px;
+      background: rgba(174,154,205,.25);
+      box-shadow: inset 0 1px 3px rgba(72,53,101,.12);
+      transition: transform .18s ease, background .18s ease;
+    }
+    .dot.current { transform: scale(1.2); background: linear-gradient(180deg, var(--gold1), var(--gold2)); }
+    .dot.good { background: linear-gradient(180deg, var(--green1), var(--green2)); }
+    .dot.bad { background: linear-gradient(180deg, var(--red1), var(--red2)); }
+    .trail {
+      position: relative;
+      z-index: 1;
+      width: min(94%, 360px);
+      height: 42px;
+    }
+    .trail-line {
+      position: absolute;
+      left: 2%;
+      right: 2%;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 16px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--trail-start), var(--trail-end));
+      opacity: .5;
+      overflow: hidden;
+    }
+    .trail-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--gold1), var(--pink2), var(--blue2));
+      transition: width .25s ease;
+    }
+    .trail-buddy {
+      position: absolute;
+      top: 0;
+      left: 4%;
+      transform: translateX(-50%);
+      font-size: 1.8rem;
+      transition: left .25s ease;
+    }
+    .trail-star {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.5rem;
+    }
+    .button-grid {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .button-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 10px;
+    }
+    .btn {
+      border: none;
+      min-height: 66px;
+      border-radius: 22px;
+      padding: 14px 16px;
+      font-size: 1.14rem;
+      font-weight: 1000;
+      cursor: pointer;
+      box-shadow: 0 12px 20px rgba(97,77,132,.14);
+      position: relative;
+      overflow: hidden;
+    }
+    .btn:disabled { opacity: .55; cursor: default; }
+    .btn::after {
+      content: "";
+      position: absolute;
+      left: 14px;
+      right: 14px;
+      bottom: 10px;
+      height: 5px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.25);
+      pointer-events: none;
+    }
+    .btn.hear { background: linear-gradient(135deg, #fff6be, #ffe4ef, #e2f4ff); color: var(--text); }
+    .btn.secondary { background: linear-gradient(135deg, #f6efff, #eef8ff); color: var(--text); min-height: 56px; font-size: 1rem; box-shadow: 0 9px 16px rgba(97,77,132,.08); }
+    .btn.good { background: linear-gradient(180deg, var(--green1), var(--green2)); color: #fff; }
+    .btn.bad { background: linear-gradient(180deg, var(--red1), var(--red2)); color: #fff; }
+    .micro {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .pill-btn {
+      border: none;
+      min-height: 52px;
+      padding: 10px 12px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.9);
+      box-shadow: 0 8px 16px rgba(97,77,132,.08);
+      font-size: 1rem;
+      font-weight: 900;
+      cursor: pointer;
+    }
+    .pill-btn.accent {
+      background: var(--accent-grad);
+      color: white;
+    }
+    .feedback {
+      min-height: 38px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      font-weight: 900;
+      color: var(--muted);
+      font-size: .96rem;
+    }
+    .feedback.good { color: var(--green2); }
+    .feedback.bad { color: var(--red2); }
+    .feedback.note { color: var(--purple2); }
+    .top-stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 8px;
+      margin-top: 2px;
+    }
+    .stat {
+      background: rgba(255,255,255,.84);
+      border-radius: 18px;
+      padding: 10px 12px;
+      box-shadow: var(--shadow-soft);
+      font-size: .9rem;
+      font-weight: 800;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.2;
+    }
+    .stat strong {
+      display: block;
+      margin-top: 4px;
+      color: var(--text);
+      font-size: 1rem;
+    }
+    .sticker-shelf {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+      min-height: 44px;
+    }
+    .sticker {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(255,241,184,.94), rgba(255,220,237,.96), rgba(222,243,255,.96));
+      box-shadow: 0 7px 14px rgba(97,77,132,.1);
+      font-size: 1.35rem;
+    }
+    .small-empty {
+      font-size: .92rem;
+      color: var(--muted);
+      font-weight: 700;
+      padding: 8px 2px 0;
+    }
+    .buddy-card, .summary-card {
+      padding: 14px;
+    }
+    .panel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .panel-head h2 {
+      margin: 0;
+      font-size: 1.1rem;
+      font-weight: 900;
+    }
+    .panel-head .sub {
+      font-size: .9rem;
+      color: var(--muted);
+      font-weight: 800;
+    }
+    .buddy-wrap {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 14px;
+      align-items: center;
+    }
+    .buddy-face {
+      width: 82px;
+      height: 82px;
+      display: grid;
+      place-items: center;
+      border-radius: 26px;
+      background: linear-gradient(135deg, rgba(255,238,247,.98), rgba(236,248,255,.98));
+      box-shadow: var(--shadow-soft);
+      font-size: 2.6rem;
+    }
+    body.theme-dino .buddy-face {
+      background: linear-gradient(135deg, rgba(255,239,220,.98), rgba(233,247,228,.98));
+    }
+    .buddy-name {
+      font-size: 1.08rem;
+      font-weight: 1000;
+      margin-bottom: 4px;
+    }
+    .buddy-mood {
+      font-size: .96rem;
+      color: var(--muted);
+      font-weight: 700;
+      line-height: 1.3;
+      min-height: 2.6em;
+    }
+    .belly {
+      margin-top: 10px;
+      width: 100%;
+      height: 16px;
+      border-radius: 999px;
+      background: rgba(221,211,239,.45);
+      overflow: hidden;
+      box-shadow: inset 0 1px 2px rgba(91,71,123,.08);
+    }
+    .belly-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--gold1), var(--pink2), var(--blue2));
+      transition: width .25s ease;
+    }
+    .buddy-note {
+      margin-top: 8px;
+      font-size: .9rem;
+      font-weight: 700;
+      color: var(--muted);
+    }
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 12px;
+    }
+    .summary-panel {
+      background: rgba(255,255,255,.78);
+      border: 1px solid rgba(255,255,255,.86);
+      border-radius: 22px;
+      padding: 12px;
+      box-shadow: var(--shadow-soft);
+    }
+    .summary-panel h3 {
+      margin: 0 0 10px;
+      font-size: 1rem;
+      font-weight: 900;
+    }
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      min-height: 34px;
+    }
+    .chip {
+      border: none;
+      border-radius: 999px;
+      padding: 8px 12px;
+      background: var(--chip-bg);
+      color: var(--text);
+      font-weight: 900;
+      font-size: .92rem;
+      box-shadow: 0 4px 10px rgba(97,77,132,.06);
+      cursor: pointer;
+    }
+    .chip.alt { background: var(--chip-alt); }
+    .chip .count {
+      display: inline-block;
+      min-width: 20px;
+      padding: 2px 6px;
+      margin-left: 6px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.7);
+      font-size: .76rem;
+    }
+    .finish-actions {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .hidden { display: none !important; }
+    details.parent-card {
+      padding: 0;
+      overflow: hidden;
+    }
+    .parent-card summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 16px 18px;
+      font-size: 1.06rem;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      background: rgba(255,255,255,.86);
+    }
+    .parent-card summary::-webkit-details-marker { display: none; }
+    .parent-card summary::after {
+      content: "▾";
+      font-size: 1.1rem;
+      transition: transform .18s ease;
+    }
+    .parent-card[open] summary::after { transform: rotate(180deg); }
+    .parent-body {
+      padding: 0 16px 16px;
+      display: grid;
+      gap: 14px;
+    }
+    .parent-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 12px;
+    }
+    .field {
+      display: grid;
+      gap: 8px;
+    }
+    .label {
+      font-size: .92rem;
+      font-weight: 900;
+      color: var(--muted);
+    }
+    .select, .text, .textarea {
+      width: 100%;
+      border: 2px solid rgba(138,116,185,.14);
+      border-radius: 18px;
+      padding: 12px 14px;
+      background: rgba(255,255,255,.95);
+      color: var(--text);
+      min-height: 50px;
+    }
+    .textarea {
+      min-height: 140px;
+      resize: vertical;
+    }
+    .switch {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: rgba(255,255,255,.82);
+      border-radius: 18px;
+      padding: 12px 14px;
+      box-shadow: var(--shadow-soft);
+      font-weight: 800;
+      color: var(--text);
+    }
+    .switch small {
+      display: block;
+      color: var(--muted);
+      font-weight: 700;
+      margin-top: 4px;
+      line-height: 1.25;
+    }
+    .switch input {
+      width: 22px;
+      height: 22px;
+      flex: none;
+    }
+    .range-wrap {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: center;
+    }
+    .range {
+      width: 100%;
+    }
+    .parent-actions {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 10px;
+    }
+    .note-box {
+      border-radius: 18px;
+      background: rgba(255,255,255,.8);
+      padding: 12px 14px;
+      color: var(--muted);
+      font-size: .92rem;
+      font-weight: 700;
+      line-height: 1.35;
+      box-shadow: var(--shadow-soft);
+    }
+    .file-btn {
+      position: relative;
+      overflow: hidden;
+    }
+    .file-btn input {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+    .confetti {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 1000;
+    }
+    .confetti-piece {
+      position: absolute;
+      top: -20px;
+      font-size: 20px;
+      animation: drop linear forwards;
+      opacity: .96;
+    }
+    @keyframes drop {
+      to {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: .92;
+      }
+    }
+    @keyframes floaty {
+      0%,100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-6px) scale(1.08); }
+    }
+    @media (max-width: 660px) {
+      .summary-grid, .parent-grid, .finish-actions, .parent-actions { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 520px) {
+      .mini-actions, .top-stats, .micro, .button-row { grid-template-columns: 1fr; }
+      .btn { min-height: 62px; }
+      .hero-stage { min-height: 284px; }
+      .word-text { font-size: clamp(3.2rem, 17vw, 5.4rem); }
+      .brand-copy h1 { font-size: 1.3rem; }
+    }
+  </style>
+</head>
+<body class="theme-unicorn">
+  <div class="app">
+    <section class="card stage-card">
+      <div class="topline">
+        <div class="brand">
+          <div id="brandMascot" class="brand-mascot">🦄</div>
+          <div class="brand-copy">
+            <h1>Star Words</h1>
+            <p id="brandSub">Read first. Tap Hear only if you want help.</p>
+          </div>
+        </div>
+        <button id="settingsJump" class="icon-btn" type="button" aria-label="Open parent settings">⚙️</button>
+      </div>
+
+      <div id="themeTabs" class="scroll-row"></div>
+      <div id="packTabs" class="scroll-row"></div>
+
+      <div class="mini-actions">
+        <button id="newMissionBtn" class="mini-btn" type="button">▶️ New 10</button>
+        <button id="reviewBtn" class="mini-btn" type="button">⏰ Review <span id="dueBubble" class="mini-bubble">0</span></button>
+        <button id="trickyBtn" class="mini-btn" type="button">💖 Tricky</button>
+      </div>
+
+      <div class="hero-stage">
+        <div class="art">
+          <div class="rainbow"></div>
+          <div class="volcano"><div class="lava"></div><div class="mount"></div></div>
+          <div class="sparkle s1">✨</div>
+          <div class="sparkle s2">⭐</div>
+          <div class="sparkle s3">💫</div>
+          <div class="sparkle s4">✨</div>
+        </div>
+
+        <div id="modeChip" class="mode-chip">10-word mission</div>
+        <div id="promptText" class="prompt">Try reading this word yourself first.</div>
+        <div id="wordText" class="word-text">the</div>
+        <div id="dots" class="dots"></div>
+
+        <div class="trail" aria-hidden="true">
+          <div class="trail-line"><div id="trailFill" class="trail-fill"></div></div>
+          <div id="trailBuddy" class="trail-buddy">🦄</div>
+          <div class="trail-star">⭐</div>
+        </div>
+      </div>
+
+      <div class="button-grid">
+        <button id="hearBtn" class="btn hear" type="button">🔊 Hear it</button>
+        <div class="button-row">
+          <button id="slowBtn" class="btn secondary" type="button">🐢 Slow</button>
+          <button id="sayBtn" class="btn secondary" type="button">🎤 Say it</button>
+        </div>
+        <div class="button-row">
+          <button id="gotBtn" class="btn good" type="button">✅ I got it</button>
+          <button id="missBtn" class="btn bad" type="button">❤️ Needs practice</button>
+        </div>
+      </div>
+
+      <div class="micro">
+        <button id="undoBtn" class="pill-btn" type="button">↩ Undo</button>
+        <button id="restartBtn" class="pill-btn" type="button">🔀 Shuffle</button>
+        <button id="feedBtn" class="pill-btn accent" type="button">🍓 Feed buddy • <span id="snackBank">0</span></button>
+      </div>
+
+      <div id="feedback" class="feedback">Ready to play.</div>
+
+      <div class="top-stats">
+        <div class="stat">Pack mastered<strong id="masteredStat">0 / 0</strong></div>
+        <div class="stat">Missions<strong id="missionsStat">0</strong></div>
+        <div class="stat">Stickers<strong id="stickersStat">0</strong></div>
+      </div>
+
+      <div id="stickerShelf" class="sticker-shelf"></div>
+      <div id="finishActions" class="finish-actions hidden">
+        <button id="playAgainBtn" class="mini-btn" type="button">▶️ Play again</button>
+        <button id="reviewNowBtn" class="mini-btn" type="button">⏰ Review now</button>
+        <button id="nextPackBtn" class="mini-btn" type="button">⏭ Next pack</button>
+      </div>
+    </section>
+
+    <section class="card buddy-card">
+      <div class="panel-head">
+        <h2>Buddy Corner</h2>
+        <div class="sub">Snacks come from finished missions.</div>
+      </div>
+      <div class="buddy-wrap">
+        <div id="buddyFace" class="buddy-face">🦄</div>
+        <div>
+          <div id="buddyName" class="buddy-name">Starberry the Unicorn</div>
+          <div id="buddyMood" class="buddy-mood">Ready to listen and play.</div>
+          <div class="belly"><div id="bellyFill" class="belly-fill"></div></div>
+          <div id="buddyNote" class="buddy-note">Feed 5 snacks to fill the buddy meter.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card summary-card">
+      <div class="summary-grid">
+        <div class="summary-panel">
+          <h3>💖 Needs practice</h3>
+          <div id="practiceChips" class="chips"></div>
+          <div id="practiceEmpty" class="small-empty">No practice words yet.</div>
+        </div>
+        <div class="summary-panel">
+          <h3>⏰ Due to review</h3>
+          <div id="dueChips" class="chips"></div>
+          <div id="dueEmpty" class="small-empty">No review words due right now.</div>
+        </div>
+      </div>
+    </section>
+
+    <details id="parentCard" class="card parent-card">
+      <summary>Parent settings</summary>
+      <div class="parent-body">
+        <div class="parent-grid">
+          <div class="field">
+            <label class="label" for="voiceSelect">Voice</label>
+            <select id="voiceSelect" class="select"></select>
+          </div>
+          <div class="field">
+            <label class="label">Speech speed</label>
+            <div class="range-wrap">
+              <input id="rateSlider" class="range" type="range" min="0.55" max="1.05" step="0.05" />
+              <div id="rateLabel" class="label">0.80×</div>
+            </div>
+            <button id="testVoiceBtn" class="mini-btn" type="button">🔊 Test voice</button>
+          </div>
+        </div>
+
+        <div class="switch">
+          <div>Auto-speak next word<small>Default is off so your kid can try first.</small></div>
+          <input id="autoSpeakToggle" type="checkbox" />
+        </div>
+
+        <div class="switch">
+          <div>Read each word twice<small>Often sounds clearer on phones and tablets.</small></div>
+          <input id="repeatToggle" type="checkbox" />
+        </div>
+
+        <div class="field">
+          <label class="label" for="customWordsInput">Custom words — one per line or separated by commas</label>
+          <textarea id="customWordsInput" class="textarea" placeholder="the&#10;because&#10;friend&#10;purple"></textarea>
+          <div id="customCount" class="note-box">0 custom words saved.</div>
+        </div>
+
+        <div class="parent-actions">
+          <button id="saveCustomBtn" class="mini-btn" type="button">💾 Save custom</button>
+          <button id="appendCustomBtn" class="mini-btn" type="button">➕ Append custom</button>
+          <button id="clearCustomBtn" class="mini-btn" type="button">♻️ Clear custom</button>
+        </div>
+
+        <div class="parent-actions">
+          <label class="mini-btn file-btn">
+            📄 Import words
+            <input id="importWordsInput" type="file" accept=".txt,.csv,text/plain,text/csv" />
+          </label>
+          <button id="useCustomBtn" class="mini-btn" type="button">🛠 Play custom pack</button>
+          <button id="copyCurrentBtn" class="mini-btn" type="button">📋 Load current pack</button>
+        </div>
+
+        <div class="parent-actions">
+          <button id="exportBackupBtn" class="mini-btn" type="button">⬇️ Export backup</button>
+          <label class="mini-btn file-btn">
+            ⬆️ Import backup
+            <input id="importBackupInput" type="file" accept=".json,application/json" />
+          </label>
+          <button id="exportCsvBtn" class="mini-btn" type="button">📊 Export CSV</button>
+        </div>
+
+        <div class="parent-actions">
+          <button id="resetProgressBtn" class="mini-btn" type="button">🧼 Reset progress</button>
+          <button id="newMissionFromSettingsBtn" class="mini-btn" type="button">▶️ New mission</button>
+          <button id="reviewFromSettingsBtn" class="mini-btn" type="button">⏰ Review due</button>
+        </div>
+
+        <div class="note-box">
+          GitHub Pages tip: upload the included <strong>index.html</strong> file at the top level of the publishing source. If you are using a project repository, the URL includes the repo name. If you want the root URL, the repo itself must be named <strong>yourusername.github.io</strong>.
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <div id="confetti" class="confetti" aria-hidden="true"></div>
+
+  <script>
+    const WORD_PACKS = {"kindergarten": ["a", "all", "am", "an", "and", "are", "at", "ate", "away", "be", "big", "black", "blue", "brown", "but", "came", "can", "come", "did", "do", "down", "eat", "find", "for", "funny", "get", "go", "good", "have", "he", "help", "here", "I", "in", "into", "is", "it", "jump", "like", "little", "look", "make", "me", "my", "new", "no", "not", "now", "on", "one", "orange", "our", "out", "play", "pretty", "ran", "red", "ride", "said", "saw", "see", "she", "so", "soon", "that", "the", "there", "they", "this", "to", "too", "two", "up", "was", "we", "well", "went", "what", "white", "who", "will", "with", "yes", "yellow", "you", "apple", "ball", "book", "cat", "dog", "fish", "friend", "game", "hand", "hat", "house", "kid", "light", "milk", "moon", "name", "park", "rain", "school", "smile", "snack", "star", "sun", "toy", "tree", "water"], "first": ["about", "after", "again", "air", "also", "animal", "answer", "around", "ask", "back", "because", "before", "best", "both", "boy", "bring", "buy", "by", "call", "carry", "clean", "cold", "could", "day", "does", "don't", "draw", "drink", "each", "every", "fast", "first", "five", "fly", "found", "full", "funny", "gave", "girl", "goes", "green", "grow", "has", "her", "hold", "hot", "how", "hurt", "if", "just", "keep", "kind", "know", "laugh", "let", "live", "long", "many", "may", "more", "most", "much", "must", "never", "of", "off", "old", "once", "open", "or", "other", "over", "own", "pick", "please", "pull", "put", "read", "right", "round", "say", "seven", "shall", "show", "sing", "six", "sleep", "small", "start", "stop", "take", "tell", "ten", "thank", "them", "then", "think", "three", "today", "together", "try", "under", "walk", "warm", "wash", "which", "why", "wish", "work", "would", "write", "always", "better", "color", "family", "garden", "happy", "inside", "outside", "paper", "picture", "river", "story", "table", "teacher", "winter", "summer", "spring"], "second": ["above", "across", "almost", "another", "anything", "around", "awake", "between", "body", "brother", "build", "busy", "care", "caught", "children", "city", "close", "clothes", "country", "decide", "didn't", "different", "door", "early", "earth", "enough", "everywhere", "example", "eyes", "father", "favorite", "feet", "finally", "follow", "food", "forest", "friends", "full", "gave", "great", "group", "grow", "happened", "hard", "hear", "heard", "history", "hours", "idea", "important", "kinds", "knew", "language", "large", "learn", "letter", "light", "maybe", "measure", "might", "money", "morning", "mother", "mountain", "move", "music", "near", "number", "often", "order", "page", "plants", "points", "question", "reach", "remember", "river", "school", "second", "sentence", "several", "shape", "short", "should", "something", "sometimes", "song", "soon", "sound", "story", "study", "such", "sure", "their", "thing", "thought", "through", "told", "toward", "travel", "until", "usually", "voice", "watch", "while", "whole", "woman", "world", "young", "yourself", "adventure", "afternoon", "beautiful", "better", "careful", "clever", "cloudy", "discover", "drawing", "exercise", "finished", "friendly", "grocery", "imagine", "listen", "market", "minute", "puzzle", "reading", "science", "special", "strong", "thunder", "tomorrow", "together", "wonderful", "yellow", "zipper", "balloon", "candle", "dentist", "feather", "helper", "jacket", "kitchen", "library", "notebook", "playground", "rainbow", "rocket", "sandwich", "slippery", "window"]};
+    const THEMES = {
+      unicorn: {
+        label: "Unicorn",
+        emoji: "🦄",
+        buddyName: "Starberry the Unicorn",
+        buddyReady: "Ready to listen and play.",
+        buddyFed: "Yum. More rainbow reading, please.",
+        feedIcon: "🍓",
+        snackIcon: "🧁",
+        stickers: ["⭐","💎","🌈","💖","🦄","✨"],
+        confetti: ["⭐","💖","✨","🌈","💎","🦄"],
+        prompt: "Try reading this word yourself first."
+      },
+      dino: {
+        label: "Dino",
+        emoji: "🦖",
+        buddyName: "Rex the Dino",
+        buddyReady: "Ready to stomp through some words.",
+        buddyFed: "Chomp. That was a great snack.",
+        feedIcon: "🥬",
+        snackIcon: "🍃",
+        stickers: ["🦖","🌋","🥚","🪨","⭐","✨"],
+        confetti: ["🦖","🌋","✨","🥚","🪨","⭐"],
+        prompt: "Try reading this word yourself first."
+      }
+    };
+    const PACK_INFO = {
+      kindergarten: { label: "Kindergarten", short: "K", desc: "Very common early sight words." },
+      first: { label: "1st Grade", short: "1st", desc: "A bigger mix of high-frequency reader words." },
+      second: { label: "2nd Grade", short: "2nd", desc: "Longer words and trickier review words." },
+      custom: { label: "Custom", short: "Custom", desc: "Your own word list." }
+    };
+    const STORAGE_KEY = "star-words-remix-v2";
+    const PRAISE = ["Nice job.", "You got it.", "Great reading.", "That was strong.", "Super work."];
+    const TRY_AGAIN = ["That one can come back.", "Nice try. We will practice it again.", "Keep going. You are doing fine.", "No problem. Try it again later."];
+    const MODE_TEXT = {
+      standard: "10-word mission",
+      review: "Review mission",
+      tricky: "Tricky-word mission"
+    };
+
+    const els = {
+      body: document.body,
+      brandMascot: document.getElementById("brandMascot"),
+      brandSub: document.getElementById("brandSub"),
+      themeTabs: document.getElementById("themeTabs"),
+      packTabs: document.getElementById("packTabs"),
+      newMissionBtn: document.getElementById("newMissionBtn"),
+      reviewBtn: document.getElementById("reviewBtn"),
+      trickyBtn: document.getElementById("trickyBtn"),
+      dueBubble: document.getElementById("dueBubble"),
+      modeChip: document.getElementById("modeChip"),
+      promptText: document.getElementById("promptText"),
+      wordText: document.getElementById("wordText"),
+      dots: document.getElementById("dots"),
+      trailFill: document.getElementById("trailFill"),
+      trailBuddy: document.getElementById("trailBuddy"),
+      hearBtn: document.getElementById("hearBtn"),
+      slowBtn: document.getElementById("slowBtn"),
+      sayBtn: document.getElementById("sayBtn"),
+      gotBtn: document.getElementById("gotBtn"),
+      missBtn: document.getElementById("missBtn"),
+      undoBtn: document.getElementById("undoBtn"),
+      restartBtn: document.getElementById("restartBtn"),
+      feedBtn: document.getElementById("feedBtn"),
+      snackBank: document.getElementById("snackBank"),
+      feedback: document.getElementById("feedback"),
+      masteredStat: document.getElementById("masteredStat"),
+      missionsStat: document.getElementById("missionsStat"),
+      stickersStat: document.getElementById("stickersStat"),
+      stickerShelf: document.getElementById("stickerShelf"),
+      finishActions: document.getElementById("finishActions"),
+      playAgainBtn: document.getElementById("playAgainBtn"),
+      reviewNowBtn: document.getElementById("reviewNowBtn"),
+      nextPackBtn: document.getElementById("nextPackBtn"),
+      buddyFace: document.getElementById("buddyFace"),
+      buddyName: document.getElementById("buddyName"),
+      buddyMood: document.getElementById("buddyMood"),
+      bellyFill: document.getElementById("bellyFill"),
+      buddyNote: document.getElementById("buddyNote"),
+      practiceChips: document.getElementById("practiceChips"),
+      practiceEmpty: document.getElementById("practiceEmpty"),
+      dueChips: document.getElementById("dueChips"),
+      dueEmpty: document.getElementById("dueEmpty"),
+      parentCard: document.getElementById("parentCard"),
+      settingsJump: document.getElementById("settingsJump"),
+      voiceSelect: document.getElementById("voiceSelect"),
+      rateSlider: document.getElementById("rateSlider"),
+      rateLabel: document.getElementById("rateLabel"),
+      testVoiceBtn: document.getElementById("testVoiceBtn"),
+      autoSpeakToggle: document.getElementById("autoSpeakToggle"),
+      repeatToggle: document.getElementById("repeatToggle"),
+      customWordsInput: document.getElementById("customWordsInput"),
+      customCount: document.getElementById("customCount"),
+      saveCustomBtn: document.getElementById("saveCustomBtn"),
+      appendCustomBtn: document.getElementById("appendCustomBtn"),
+      clearCustomBtn: document.getElementById("clearCustomBtn"),
+      importWordsInput: document.getElementById("importWordsInput"),
+      useCustomBtn: document.getElementById("useCustomBtn"),
+      copyCurrentBtn: document.getElementById("copyCurrentBtn"),
+      exportBackupBtn: document.getElementById("exportBackupBtn"),
+      importBackupInput: document.getElementById("importBackupInput"),
+      exportCsvBtn: document.getElementById("exportCsvBtn"),
+      resetProgressBtn: document.getElementById("resetProgressBtn"),
+      newMissionFromSettingsBtn: document.getElementById("newMissionFromSettingsBtn"),
+      reviewFromSettingsBtn: document.getElementById("reviewFromSettingsBtn"),
+      confetti: document.getElementById("confetti")
+    };
+
+    const defaultState = () => ({
+      theme: "unicorn",
+      pack: "kindergarten",
+      customWords: [],
+      settings: {
+        autoSpeak: false,
+        repeatTwice: true,
+        rate: 0.8,
+        voiceURI: ""
+      },
+      progress: {},
+      currentMission: null,
+      snacks: 0,
+      stickers: [],
+      buddyFeed: 0,
+      stats: {
+        missions: 0,
+        lifetimeCorrect: 0,
+        lifetimeWrong: 0
+      }
+    });
+
+    let state = loadState();
+    let undoSnapshot = null;
+    let activeRecognition = null;
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return defaultState();
+        const parsed = JSON.parse(raw);
+        return normalizeState(parsed);
+      } catch (err) {
+        return defaultState();
+      }
+    }
+
+    function normalizeState(obj) {
+      const base = defaultState();
+      const merged = {
+        ...base,
+        ...obj,
+        settings: { ...base.settings, ...(obj && obj.settings ? obj.settings : {}) },
+        stats: { ...base.stats, ...(obj && obj.stats ? obj.stats : {}) },
+        progress: obj && obj.progress && typeof obj.progress === "object" ? obj.progress : {},
+        customWords: Array.isArray(obj && obj.customWords) ? uniqueWords(obj.customWords) : [],
+        stickers: Array.isArray(obj && obj.stickers) ? obj.stickers.slice(0, 120) : []
+      };
+      if (!PACK_INFO[merged.pack]) merged.pack = "kindergarten";
+      if (!THEMES[merged.theme]) merged.theme = "unicorn";
+      if (merged.pack === "custom" && !merged.customWords.length) merged.pack = "kindergarten";
+      if (merged.currentMission) {
+        merged.currentMission = normalizeMission(merged.currentMission);
+      }
+      return merged;
+    }
+
+    function normalizeMission(m) {
+      const words = Array.isArray(m.words) ? uniqueWords(m.words) : [];
+      const retryWords = Array.isArray(m.retryWords) ? uniqueWords(m.retryWords) : [];
+      const mainResults = Array.isArray(m.mainResults) ? m.mainResults.slice(0, words.length) : [];
+      while (mainResults.length < words.length) mainResults.push("pending");
+      const retryResults = Array.isArray(m.retryResults) ? m.retryResults.slice(0, retryWords.length) : [];
+      while (retryResults.length < retryWords.length) retryResults.push("pending");
+      return {
+        kind: m.kind || "standard",
+        words,
+        mainPointer: Number.isFinite(m.mainPointer) ? m.mainPointer : 0,
+        mainResults,
+        retryWords,
+        retryPointer: Number.isFinite(m.retryPointer) ? m.retryPointer : 0,
+        retryResults,
+        phase: m.phase === "retry" ? "retry" : "main",
+        completed: !!m.completed,
+        startedAt: m.startedAt || Date.now(),
+        completedAt: m.completedAt || null,
+        rewardGiven: !!m.rewardGiven
+      };
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function getPackWords(packName = state.pack) {
+      if (packName === "custom") {
+        return state.customWords.length ? state.customWords.slice() : WORD_PACKS.kindergarten.slice();
+      }
+      return (WORD_PACKS[packName] || WORD_PACKS.kindergarten).slice();
+    }
+
+    function uniqueWords(list) {
+      const seen = new Set();
+      const out = [];
+      (list || []).forEach(item => {
+        const word = String(item || "").trim();
+        if (!word) return;
+        const key = word.toLowerCase();
+        if (seen.has(key)) return;
+        seen.add(key);
+        out.push(word);
+      });
+      return out;
+    }
+
+    function parseWords(text) {
+      return uniqueWords(String(text || "").split(/[\n,\t;]+/));
+    }
+
+    function getProgress(word) {
+      if (!state.progress[word]) {
+        state.progress[word] = {
+          seen: 0,
+          correct: 0,
+          wrong: 0,
+          ease: 0,
+          dueAt: 0,
+          mastered: false,
+          lastSeenAt: 0,
+          lastWrongAt: 0
+        };
+      }
+      return state.progress[word];
+    }
+
+    function dueInterval(ease) {
+      const table = [
+        12 * 60 * 60 * 1000,
+        1 * 24 * 60 * 60 * 1000,
+        3 * 24 * 60 * 60 * 1000,
+        7 * 24 * 60 * 60 * 1000,
+        14 * 24 * 60 * 60 * 1000,
+        30 * 24 * 60 * 60 * 1000
+      ];
+      return table[Math.max(0, Math.min(table.length - 1, ease || 0))];
+    }
+
+    function computeMastery(p) {
+      return (p.correct >= 2 && p.ease >= 2 && p.correct > p.wrong);
+    }
+
+    function getDueWords(packName = state.pack) {
+      const now = Date.now();
+      return getPackWords(packName).filter(word => {
+        const p = getProgress(word);
+        return p.seen > 0 && (p.dueAt || 0) <= now;
+      }).sort((a, b) => (getProgress(a).dueAt || 0) - (getProgress(b).dueAt || 0));
+    }
+
+    function getTrickyWords(packName = state.pack) {
+      return getPackWords(packName)
+        .filter(word => {
+          const p = getProgress(word);
+          return (p.wrong || 0) > 0;
+        })
+        .sort((a, b) => trickyScore(b) - trickyScore(a));
+    }
+
+    function trickyScore(word) {
+      const p = getProgress(word);
+      return (p.wrong * 3) - (p.correct) + (p.mastered ? -1 : 2);
+    }
+
+    function getMasteredCount(packName = state.pack) {
+      return getPackWords(packName).filter(word => getProgress(word).mastered).length;
+    }
+
+    function buildMissionWords(kind) {
+      const packWords = getPackWords();
+      const due = getDueWords();
+      const tricky = getTrickyWords();
+      const fresh = packWords.filter(word => getProgress(word).seen === 0);
+      const seenOther = packWords
+        .filter(word => getProgress(word).seen > 0 && !due.includes(word) && !tricky.includes(word))
+        .sort((a, b) => {
+          const pa = getProgress(a);
+          const pb = getProgress(b);
+          return (pa.ease - pb.ease) || ((pa.lastSeenAt || 0) - (pb.lastSeenAt || 0));
+        });
+
+      const chosen = [];
+      const pushFrom = (arr, limit) => {
+        for (const word of arr) {
+          if (chosen.length >= limit) break;
+          if (!chosen.includes(word)) chosen.push(word);
+        }
+      };
+
+      if (kind === "review") {
+        pushFrom(due, 10);
+        pushFrom(tricky, 10);
+        pushFrom(seenOther, 10);
+        pushFrom(fresh, 10);
+      } else if (kind === "tricky") {
+        pushFrom(tricky, 10);
+        pushFrom(due, 10);
+        pushFrom(fresh, 10);
+        pushFrom(seenOther, 10);
+      } else {
+        pushFrom(shuffle(due), 3);
+        pushFrom(shuffle(tricky), 6);
+        pushFrom(shuffle(fresh), 10);
+        pushFrom(shuffle(seenOther), 10);
+        pushFrom(shuffle(packWords), 10);
+      }
+
+      return chosen.slice(0, Math.min(10, packWords.length));
+    }
+
+    function startMission(kind = "standard") {
+      const words = buildMissionWords(kind);
+      if (!words.length) {
+        showFeedback("No words available yet.", "note");
+        return;
+      }
+      state.currentMission = {
+        kind,
+        words,
+        mainPointer: 0,
+        mainResults: Array(words.length).fill("pending"),
+        retryWords: [],
+        retryPointer: 0,
+        retryResults: [],
+        phase: "main",
+        completed: false,
+        startedAt: Date.now(),
+        completedAt: null,
+        rewardGiven: false
+      };
+      undoSnapshot = null;
+      saveState();
+      updateUI();
+      maybeAutoSpeak();
+    }
+
+    function currentInfo() {
+      const m = state.currentMission;
+      if (!m) return null;
+      if (m.completed) return null;
+      if (m.phase === "main") {
+        if (m.mainPointer < m.words.length) {
+          return {
+            word: m.words[m.mainPointer],
+            source: "main",
+            index: m.mainPointer,
+            total: m.words.length
+          };
+        }
+        if (m.retryWords.length) {
+          m.phase = "retry";
+          saveState();
+          return currentInfo();
+        }
+        completeMission();
+        return null;
+      }
+      if (m.phase === "retry") {
+        if (m.retryPointer < m.retryWords.length) {
+          return {
+            word: m.retryWords[m.retryPointer],
+            source: "retry",
+            index: m.retryPointer,
+            total: m.retryWords.length
+          };
+        }
+        completeMission();
+        return null;
+      }
+      return null;
+    }
+
+    function completeMission() {
+      const m = state.currentMission;
+      if (!m || m.completed) return;
+      m.completed = true;
+      m.completedAt = Date.now();
+      if (!m.rewardGiven) {
+        state.stats.missions += 1;
+        state.snacks += 1;
+        state.stickers.push(nextSticker());
+        m.rewardGiven = true;
+      }
+      saveState();
+      showFeedback("Mission complete. Snack earned.", "good");
+      setBuddyMood("Mission finished. Feed your buddy.");
+      launchConfetti(20);
+      updateUI();
+    }
+
+    function nextSticker() {
+      const set = THEMES[state.theme].stickers;
+      return set[state.stickers.length % set.length];
+    }
+
+    function takeUndo() {
+      undoSnapshot = JSON.stringify(state);
+      updateButtons();
+    }
+
+    function restoreUndo() {
+      if (!undoSnapshot) return;
+      try {
+        state = normalizeState(JSON.parse(undoSnapshot));
+        undoSnapshot = null;
+        saveState();
+        updateUI();
+        showFeedback("Last answer undone.", "note");
+      } catch (err) {}
+    }
+
+    function applyAnswer(correct, viaVoice = false) {
+      const info = currentInfo();
+      if (!info) return;
+      takeUndo();
+
+      const p = getProgress(info.word);
+      p.seen += 1;
+      p.lastSeenAt = Date.now();
+
+      const m = state.currentMission;
+
+      if (correct) {
+        p.correct += 1;
+        p.ease = Math.min(5, (p.ease || 0) + 1);
+        p.dueAt = Date.now() + dueInterval(p.ease);
+        p.mastered = computeMastery(p);
+        state.stats.lifetimeCorrect += 1;
+
+        if (info.source === "main") m.mainResults[info.index] = "good";
+        else m.retryResults[info.index] = "good";
+
+        showFeedback(viaVoice ? "Nice. I heard it." : randomFrom(PRAISE), "good");
+        setBuddyMood(randomFrom(PRAISE));
+      } else {
+        p.wrong += 1;
+        p.ease = Math.max(0, (p.ease || 0) - 1);
+        p.dueAt = Date.now() + (6 * 60 * 60 * 1000);
+        p.lastWrongAt = Date.now();
+        p.mastered = computeMastery(p);
+        state.stats.lifetimeWrong += 1;
+
+        if (info.source === "main") {
+          m.mainResults[info.index] = "bad";
+          if (!m.retryWords.includes(info.word)) {
+            m.retryWords.push(info.word);
+            m.retryResults.push("pending");
+          }
+        } else {
+          m.retryResults[info.index] = "bad";
+        }
+
+        showFeedback(randomFrom(TRY_AGAIN), "bad");
+        setBuddyMood("That one can come back for practice.");
+      }
+
+      if (info.source === "main") {
+        m.mainPointer += 1;
+      } else {
+        m.retryPointer += 1;
+      }
+
+      saveState();
+      if (!currentInfo()) {
+        updateUI();
+        return;
+      }
+      updateUI();
+      maybeAutoSpeak();
+    }
+
+    function maybeAutoSpeak() {
+      if (!state.settings.autoSpeak) return;
+      const info = currentInfo();
+      if (!info) return;
+      setTimeout(() => {
+        const latest = currentInfo();
+        if (latest && latest.word === info.word) speakWord(info.word);
+      }, 220);
+    }
+
+    function updateUI() {
+      applyTheme();
+      buildThemeTabs();
+      buildPackTabs();
+      updateStage();
+      updateSummary();
+      updateBuddy();
+      updateParent();
+      updateButtons();
+    }
+
+    function applyTheme() {
+      els.body.classList.toggle("theme-dino", state.theme === "dino");
+      els.body.classList.toggle("theme-unicorn", state.theme === "unicorn");
+      const theme = THEMES[state.theme];
+      els.brandMascot.textContent = theme.emoji;
+      els.trailBuddy.textContent = theme.emoji;
+      els.buddyFace.textContent = theme.emoji;
+      els.buddyName.textContent = theme.buddyName;
+      els.brandSub.textContent = "Read first. Tap Hear only if you want help.";
+      els.feedBtn.innerHTML = `${theme.feedIcon} Feed buddy • <span id="snackBank">${state.snacks}</span>`;
+    }
+
+    function buildThemeTabs() {
+      els.themeTabs.innerHTML = "";
+      Object.entries(THEMES).forEach(([key, theme]) => {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "tab" + (state.theme === key ? " active" : "");
+        b.textContent = `${theme.emoji} ${theme.label}`;
+        b.addEventListener("click", () => {
+          if (state.theme === key) return;
+          state.theme = key;
+          saveState();
+          updateUI();
+        });
+        els.themeTabs.appendChild(b);
+      });
+    }
+
+    function buildPackTabs() {
+      els.packTabs.innerHTML = "";
+      Object.entries(PACK_INFO).forEach(([key, info]) => {
+        if (key === "custom" && !state.customWords.length) return;
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "tab" + (state.pack === key ? " active" : "");
+        b.textContent = info.short;
+        b.addEventListener("click", () => {
+          if (state.pack === key) return;
+          state.pack = key;
+          if (key === "custom" && !state.customWords.length) {
+            state.pack = "kindergarten";
+            return;
+          }
+          saveState();
+          startMission("standard");
+        });
+        els.packTabs.appendChild(b);
+      });
+    }
+
+    function updateStage() {
+      const info = currentInfo();
+      const m = state.currentMission;
+      els.dueBubble.textContent = String(getDueWords().length);
+      els.masteredStat.textContent = `${getMasteredCount()} / ${getPackWords().length}`;
+      els.missionsStat.textContent = String(state.stats.missions);
+      els.stickersStat.textContent = String(state.stickers.length);
+      renderStickerShelf();
+
+      if (!m) {
+        els.modeChip.textContent = MODE_TEXT.standard;
+        els.promptText.textContent = THEMES[state.theme].prompt;
+        els.wordText.textContent = "Tap New 10";
+        renderDots([], -1);
+        els.finishActions.classList.add("hidden");
+        setTrail(0);
+        return;
+      }
+
+      if (m.completed || !info) {
+        els.modeChip.textContent = "Mission complete";
+        const wrongs = m.mainResults.filter(x => x === "bad").length;
+        els.promptText.textContent = wrongs ? `Quick retry round finished. ${wrongs} word${wrongs === 1 ? "" : "s"} still need more review later.` : "All set. Nice work.";
+        els.wordText.textContent = "🎉 Great job!";
+        renderDots(m.mainResults, -1);
+        setTrail(1);
+        els.finishActions.classList.remove("hidden");
+        return;
+      }
+
+      els.finishActions.classList.add("hidden");
+      els.modeChip.textContent = info.source === "retry"
+        ? `Retry round • ${info.index + 1}/${info.total}`
+        : `${MODE_TEXT[m.kind]} • ${info.index + 1}/${info.total}`;
+
+      els.promptText.textContent = info.source === "retry"
+        ? "This one came back for another try."
+        : THEMES[state.theme].prompt;
+
+      els.wordText.textContent = info.word;
+      renderDots(m.mainResults, info.source === "main" ? info.index : -1);
+      const progressRatio = info.source === "retry"
+        ? 1
+        : (m.words.length ? info.index / m.words.length : 0);
+      setTrail(progressRatio);
+    }
+
+    function renderDots(results, currentIndex) {
+      els.dots.innerHTML = "";
+      const count = results.length || 10;
+      for (let i = 0; i < count; i += 1) {
+        const dot = document.createElement("div");
+        const result = results[i] || "pending";
+        dot.className = "dot";
+        if (i === currentIndex) dot.classList.add("current");
+        else if (result === "good") dot.classList.add("good");
+        else if (result === "bad") dot.classList.add("bad");
+        els.dots.appendChild(dot);
+      }
+    }
+
+    function setTrail(ratio) {
+      const pct = Math.max(0, Math.min(1, ratio || 0));
+      els.trailFill.style.width = `${pct * 96}%`;
+      els.trailBuddy.style.left = `${4 + pct * 92}%`;
+    }
+
+    function renderStickerShelf() {
+      els.stickerShelf.innerHTML = "";
+      const recent = state.stickers.slice(-18);
+      if (!recent.length) {
+        const empty = document.createElement("div");
+        empty.className = "small-empty";
+        empty.textContent = "Finish a mission to earn a sticker and a snack.";
+        els.stickerShelf.appendChild(empty);
+        return;
+      }
+      recent.forEach(icon => {
+        const item = document.createElement("div");
+        item.className = "sticker";
+        item.textContent = icon;
+        els.stickerShelf.appendChild(item);
+      });
+    }
+
+    function updateBuddy() {
+      const theme = THEMES[state.theme];
+      els.buddyNote.textContent = `${state.snacks} snack${state.snacks === 1 ? "" : "s"} ready. Feed 5 snacks to fill the meter.`;
+      els.snackBank.textContent = String(state.snacks);
+      const pct = ((state.buddyFeed % 5) / 5) * 100;
+      els.bellyFill.style.width = `${pct}%`;
+      if (!els.buddyMood.textContent.trim()) els.buddyMood.textContent = theme.buddyReady;
+    }
+
+    function setBuddyMood(text) {
+      els.buddyMood.textContent = text;
+    }
+
+    function updateSummary() {
+      const due = getDueWords().slice(0, 16);
+      const tricky = getTrickyWords().slice(0, 16);
+
+      els.practiceChips.innerHTML = "";
+      els.dueChips.innerHTML = "";
+
+      if (!tricky.length) {
+        els.practiceEmpty.style.display = "block";
+      } else {
+        els.practiceEmpty.style.display = "none";
+        tricky.forEach(word => {
+          const chip = makeChip(word, state.progress[word]?.wrong || 0, "practice");
+          els.practiceChips.appendChild(chip);
+        });
+      }
+
+      if (!due.length) {
+        els.dueEmpty.style.display = "block";
+      } else {
+        els.dueEmpty.style.display = "none";
+        due.forEach(word => {
+          const chip = makeChip(word, null, "due");
+          els.dueChips.appendChild(chip);
+        });
+      }
+    }
+
+    function makeChip(word, count, kind) {
+      const chip = document.createElement("button");
+      chip.type = "button";
+      chip.className = "chip" + (kind === "due" ? " alt" : "");
+      chip.innerHTML = count ? `${escapeHtml(word)} <span class="count">${count}</span>` : escapeHtml(word);
+      chip.addEventListener("click", () => speakWord(word));
+      return chip;
+    }
+
+    function escapeHtml(text) {
+      return String(text)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;");
+    }
+
+    function updateParent() {
+      els.autoSpeakToggle.checked = !!state.settings.autoSpeak;
+      els.repeatToggle.checked = !!state.settings.repeatTwice;
+      els.rateSlider.value = String(state.settings.rate);
+      els.rateLabel.textContent = `${Number(state.settings.rate).toFixed(2)}×`;
+      els.customWordsInput.value = state.customWords.join("\n");
+      els.customCount.textContent = `${state.customWords.length} custom word${state.customWords.length === 1 ? "" : "s"} saved.`;
+      els.useCustomBtn.disabled = !state.customWords.length;
+      els.useCustomBtn.style.opacity = state.customWords.length ? "1" : ".55";
+    }
+
+    function updateButtons() {
+      const info = currentInfo();
+      const hasMission = !!state.currentMission;
+      const canPlay = !!info;
+      els.hearBtn.disabled = !canPlay;
+      els.slowBtn.disabled = !canPlay;
+      els.gotBtn.disabled = !canPlay;
+      els.missBtn.disabled = !canPlay;
+      els.sayBtn.disabled = !canPlay || !voiceRecognitionSupported();
+      els.undoBtn.disabled = !undoSnapshot;
+      els.restartBtn.disabled = !hasMission;
+      els.feedBtn.disabled = state.snacks <= 0;
+      if (!voiceRecognitionSupported()) {
+        els.sayBtn.textContent = "🎤 No mic here";
+      } else {
+        els.sayBtn.textContent = activeRecognition ? "🎤 Listening…" : "🎤 Say it";
+      }
+    }
+
+    function showFeedback(text, kind = "note") {
+      els.feedback.textContent = text;
+      els.feedback.className = `feedback ${kind}`;
+      clearTimeout(showFeedback._timer);
+      showFeedback._timer = setTimeout(() => {
+        els.feedback.className = "feedback";
+      }, 1200);
+    }
+
+    function feedBuddy() {
+      if (state.snacks <= 0) {
+        showFeedback("No snacks to feed yet.", "note");
+        return;
+      }
+      state.snacks -= 1;
+      state.buddyFeed += 1;
+      setBuddyMood(THEMES[state.theme].buddyFed);
+      showFeedback("Buddy fed.", "good");
+      if (state.buddyFeed % 5 === 0) {
+        state.stickers.push(nextSticker());
+        launchConfetti(18);
+        showFeedback("Buddy meter full. Bonus sticker earned.", "good");
+      }
+      saveState();
+      updateUI();
+    }
+
+    function shuffleCurrentMission() {
+      const words = getPackWords();
+      if (!words.length) return;
+      const chosen = shuffle(getPackWords()).slice(0, Math.min(10, getPackWords().length));
+      state.currentMission = {
+        kind: "standard",
+        words: chosen,
+        mainPointer: 0,
+        mainResults: Array(chosen.length).fill("pending"),
+        retryWords: [],
+        retryPointer: 0,
+        retryResults: [],
+        phase: "main",
+        completed: false,
+        startedAt: Date.now(),
+        completedAt: null,
+        rewardGiven: false
+      };
+      undoSnapshot = null;
+      saveState();
+      updateUI();
+    }
+
+    function nextPack() {
+      const order = ["kindergarten", "first", "second"];
+      if (state.pack === "custom") {
+        state.pack = "kindergarten";
+      } else {
+        const i = order.indexOf(state.pack);
+        state.pack = order[Math.min(order.length - 1, i + 1)];
+      }
+      saveState();
+      startMission("standard");
+    }
+
+    function shuffle(arr) {
+      const copy = arr.slice();
+      for (let i = copy.length - 1; i > 0; i -= 1) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function randomFrom(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    function getVoices() {
+      if (!("speechSynthesis" in window)) return [];
+      return window.speechSynthesis.getVoices();
+    }
+
+    function preferredVoice(voices) {
+      const preferredNames = ["Samantha", "Ava", "Allison", "Karen", "Moira", "Zoe", "Serena", "Daniel", "Alex"];
+      const score = v => {
+        let s = 0;
+        if (/en/i.test(v.lang)) s += 50;
+        const idx = preferredNames.findIndex(name => v.name.includes(name));
+        if (idx >= 0) s += 40 - idx;
+        if (/female|woman|girl/i.test(v.name)) s += 5;
+        return s;
+      };
+      return voices.slice().sort((a, b) => score(b) - score(a))[0] || null;
+    }
+
+    function populateVoiceList() {
+      const voices = getVoices();
+      const list = voices.slice().sort((a, b) => {
+        const enA = /en/i.test(a.lang) ? 0 : 1;
+        const enB = /en/i.test(b.lang) ? 0 : 1;
+        return enA - enB || a.name.localeCompare(b.name);
+      });
+
+      els.voiceSelect.innerHTML = "";
+      const auto = document.createElement("option");
+      auto.value = "";
+      auto.textContent = "Best available";
+      els.voiceSelect.appendChild(auto);
+
+      list.forEach(voice => {
+        const opt = document.createElement("option");
+        opt.value = voice.voiceURI;
+        opt.textContent = `${voice.name} • ${voice.lang}`;
+        els.voiceSelect.appendChild(opt);
+      });
+
+      els.voiceSelect.value = list.some(v => v.voiceURI === state.settings.voiceURI) ? state.settings.voiceURI : "";
+    }
+
+    function selectedVoice() {
+      const voices = getVoices();
+      if (state.settings.voiceURI) {
+        const exact = voices.find(v => v.voiceURI === state.settings.voiceURI);
+        if (exact) return exact;
+      }
+      return preferredVoice(voices);
+    }
+
+    function speakWord(word, opts = {}) {
+      if (!word || !("speechSynthesis" in window)) {
+        showFeedback("Speech is not available here.", "note");
+        return;
+      }
+      window.speechSynthesis.cancel();
+      const voice = selectedVoice();
+      const rate = opts.slow ? Math.max(0.55, state.settings.rate - 0.18) : state.settings.rate;
+      const repeat = typeof opts.repeat === "boolean" ? opts.repeat : !!state.settings.repeatTwice;
+
+      const u1 = new SpeechSynthesisUtterance(word);
+      u1.rate = rate;
+      u1.pitch = 1.0;
+      if (voice) u1.voice = voice;
+
+      if (repeat) {
+        const u2 = new SpeechSynthesisUtterance(word);
+        u2.rate = Math.max(0.55, rate - 0.06);
+        u2.pitch = 1.0;
+        if (voice) u2.voice = voice;
+        u1.onend = () => setTimeout(() => window.speechSynthesis.speak(u2), 130);
+      }
+
+      window.speechSynthesis.speak(u1);
+    }
+
+    function testVoice() {
+      const info = currentInfo();
+      speakWord(info ? info.word : "reading");
+    }
+
+    function voiceRecognitionSupported() {
+      return !!(window.SpeechRecognition || window.webkitSpeechRecognition);
+    }
+
+    function normalizedWord(value) {
+      return String(value || "").toLowerCase().replace(/[^a-z']/g, "");
+    }
+
+    function startVoiceCheck() {
+      const info = currentInfo();
+      if (!info) return;
+      if (!voiceRecognitionSupported()) {
+        showFeedback("Mic check is not supported here.", "note");
+        return;
+      }
+      if (activeRecognition) return;
+
+      const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const rec = new Recognition();
+      activeRecognition = rec;
+      rec.lang = "en-US";
+      rec.interimResults = false;
+      rec.maxAlternatives = 3;
+      updateButtons();
+      showFeedback("Say the word now.", "note");
+
+      rec.onresult = evt => {
+        const heard = [];
+        for (let i = 0; i < evt.results.length; i += 1) {
+          for (let j = 0; j < evt.results[i].length; j += 1) {
+            heard.push(evt.results[i][j].transcript);
+          }
+        }
+        const target = normalizedWord(info.word);
+        const matched = heard.some(text => {
+          const cleaned = String(text || "").toLowerCase().replace(/[^a-z' ]/g, " ");
+          const pieces = cleaned.split(/\s+/).map(normalizedWord).filter(Boolean);
+          return pieces.includes(target) || normalizedWord(cleaned) === target;
+        });
+        if (matched) {
+          applyAnswer(true, true);
+        } else {
+          showFeedback("Close. Try again or use the buttons.", "bad");
+        }
+      };
+      rec.onerror = () => {
+        showFeedback("Mic could not hear that.", "bad");
+      };
+      rec.onend = () => {
+        activeRecognition = null;
+        updateButtons();
+      };
+      rec.start();
+    }
+
+    function exportBackup() {
+      const blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/json" });
+      downloadBlob(blob, "star-words-backup.json");
+    }
+
+    function exportCsv() {
+      const rows = [["pack","word","seen","correct","wrong","ease","mastered","due_at"]];
+      Object.entries(PACK_INFO).forEach(([pack]) => {
+        if (pack === "custom" && !state.customWords.length) return;
+        getPackWords(pack).forEach(word => {
+          const p = getProgress(word);
+          rows.push([
+            pack,
+            word,
+            p.seen || 0,
+            p.correct || 0,
+            p.wrong || 0,
+            p.ease || 0,
+            p.mastered ? "yes" : "no",
+            p.dueAt ? new Date(p.dueAt).toISOString() : ""
+          ]);
+        });
+      });
+      const csv = rows.map(row => row.map(cell => `"${String(cell).replaceAll('"', '""')}"`).join(",")).join("\n");
+      const blob = new Blob([csv], { type: "text/csv" });
+      downloadBlob(blob, "star-words-progress.csv");
+    }
+
+    function downloadBlob(blob, name) {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = name;
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    }
+
+    async function importWordsFile(file) {
+      if (!file) return;
+      const text = await file.text();
+      els.customWordsInput.value = parseWords(text).join("\n");
+      updateParent();
+      showFeedback("Words loaded into custom editor.", "note");
+    }
+
+    async function importBackupFile(file) {
+      if (!file) return;
+      try {
+        const text = await file.text();
+        state = normalizeState(JSON.parse(text));
+        undoSnapshot = null;
+        saveState();
+        updateUI();
+        showFeedback("Backup imported.", "good");
+      } catch (err) {
+        showFeedback("Backup file could not be read.", "bad");
+      }
+    }
+
+    function saveCustom(overwrite) {
+      const words = parseWords(els.customWordsInput.value);
+      if (!words.length) {
+        showFeedback("Add some custom words first.", "bad");
+        return;
+      }
+      state.customWords = overwrite ? words : uniqueWords([...state.customWords, ...words]);
+      state.pack = "custom";
+      saveState();
+      updateUI();
+      startMission("standard");
+      showFeedback(overwrite ? "Custom pack saved." : "Custom pack updated.", "good");
+    }
+
+    function clearCustom() {
+      state.customWords = [];
+      if (state.pack === "custom") state.pack = "kindergarten";
+      saveState();
+      updateUI();
+      startMission("standard");
+      showFeedback("Custom pack cleared.", "note");
+    }
+
+    function resetProgress() {
+      if (!confirm("Reset all saved progress, stickers, and snacks on this device?")) return;
+      state = defaultState();
+      undoSnapshot = null;
+      saveState();
+      updateUI();
+      startMission("standard");
+      showFeedback("Everything reset.", "note");
+    }
+
+    function copyCurrentPackToEditor() {
+      els.customWordsInput.value = getPackWords().join("\n");
+      updateParent();
+      showFeedback("Current pack loaded into custom editor.", "note");
+    }
+
+    function useCustomPack() {
+      if (!state.customWords.length) {
+        showFeedback("Save custom words first.", "bad");
+        return;
+      }
+      state.pack = "custom";
+      saveState();
+      startMission("standard");
+    }
+
+    function launchConfetti(count) {
+      els.confetti.innerHTML = "";
+      const icons = THEMES[state.theme].confetti;
+      for (let i = 0; i < count; i += 1) {
+        const span = document.createElement("span");
+        span.className = "confetti-piece";
+        span.textContent = icons[Math.floor(Math.random() * icons.length)];
+        span.style.left = `${Math.random() * 100}vw`;
+        span.style.animationDuration = `${2.4 + Math.random() * 2.2}s`;
+        span.style.animationDelay = `${Math.random() * 0.2}s`;
+        els.confetti.appendChild(span);
+      }
+      clearTimeout(launchConfetti._timer);
+      launchConfetti._timer = setTimeout(() => {
+        els.confetti.innerHTML = "";
+      }, 4300);
+    }
+
+    els.newMissionBtn.addEventListener("click", () => startMission("standard"));
+    els.reviewBtn.addEventListener("click", () => startMission("review"));
+    els.trickyBtn.addEventListener("click", () => startMission("tricky"));
+    els.hearBtn.addEventListener("click", () => {
+      const info = currentInfo();
+      if (info) speakWord(info.word);
+    });
+    els.slowBtn.addEventListener("click", () => {
+      const info = currentInfo();
+      if (info) speakWord(info.word, { slow: true });
+    });
+    els.sayBtn.addEventListener("click", startVoiceCheck);
+    els.gotBtn.addEventListener("click", () => applyAnswer(true));
+    els.missBtn.addEventListener("click", () => applyAnswer(false));
+    els.undoBtn.addEventListener("click", restoreUndo);
+    els.restartBtn.addEventListener("click", shuffleCurrentMission);
+    els.feedBtn.addEventListener("click", feedBuddy);
+    els.playAgainBtn.addEventListener("click", () => startMission("standard"));
+    els.reviewNowBtn.addEventListener("click", () => startMission("review"));
+    els.nextPackBtn.addEventListener("click", nextPack);
+    els.settingsJump.addEventListener("click", () => {
+      els.parentCard.open = true;
+      els.parentCard.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
+    els.voiceSelect.addEventListener("change", e => {
+      state.settings.voiceURI = e.target.value || "";
+      saveState();
+      showFeedback("Voice saved.", "note");
+    });
+    els.rateSlider.addEventListener("input", e => {
+      state.settings.rate = Number(e.target.value);
+      els.rateLabel.textContent = `${state.settings.rate.toFixed(2)}×`;
+      saveState();
+    });
+    els.testVoiceBtn.addEventListener("click", testVoice);
+    els.autoSpeakToggle.addEventListener("change", e => {
+      state.settings.autoSpeak = e.target.checked;
+      saveState();
+      showFeedback("Auto-speak updated.", "note");
+    });
+    els.repeatToggle.addEventListener("change", e => {
+      state.settings.repeatTwice = e.target.checked;
+      saveState();
+      showFeedback("Repeat updated.", "note");
+    });
+    els.customWordsInput.addEventListener("input", updateParent);
+    els.saveCustomBtn.addEventListener("click", () => saveCustom(true));
+    els.appendCustomBtn.addEventListener("click", () => saveCustom(false));
+    els.clearCustomBtn.addEventListener("click", clearCustom);
+    els.useCustomBtn.addEventListener("click", useCustomPack);
+    els.copyCurrentBtn.addEventListener("click", copyCurrentPackToEditor);
+    els.exportBackupBtn.addEventListener("click", exportBackup);
+    els.exportCsvBtn.addEventListener("click", exportCsv);
+    els.resetProgressBtn.addEventListener("click", resetProgress);
+    els.newMissionFromSettingsBtn.addEventListener("click", () => startMission("standard"));
+    els.reviewFromSettingsBtn.addEventListener("click", () => startMission("review"));
+
+    els.importWordsInput.addEventListener("change", async e => {
+      const file = e.target.files && e.target.files[0];
+      await importWordsFile(file);
+      e.target.value = "";
+    });
+    els.importBackupInput.addEventListener("change", async e => {
+      const file = e.target.files && e.target.files[0];
+      await importBackupFile(file);
+      e.target.value = "";
+    });
+
+    window.addEventListener("load", () => {
+      populateVoiceList();
+      updateUI();
+      if (!state.currentMission || state.currentMission.completed) {
+        startMission("standard");
+      } else {
+        updateUI();
+      }
+      if ("speechSynthesis" in window) {
+        window.speechSynthesis.getVoices();
+      }
+    });
+
+    if ("speechSynthesis" in window) {
+      window.speechSynthesis.onvoiceschanged = () => populateVoiceList();
+    }
+  </script>
+</body>
+</html>
